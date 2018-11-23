@@ -98,7 +98,7 @@ To start generating data using Eurotech's simulator, follow the steps described 
 
 - Sign-in to the [simulator](https://cs.eurotech.com/gps-pcn-simulator/) **using your Everyware crendentials** (account name, username and password). Make sure to use the credentials of an Everywhere user who is authorized to publish to the mqtt topics of the platform
 
-![Sign in to the simulator](.documentation/images/signin_to_simulator.png)
+![Sign in to the simulator](./documentation/images/signin_to_simulator.png)
 
 *Image 5 - Sign in Eurotech PCN transport simulator*
 
