@@ -37,7 +37,7 @@ To start generating data using Eurotech's simulator, follow the steps described 
 - Click on **View** in the toolbar to open the dashboard in the browser
 
 ---
-**[<< back](./README.md)**, **[next >>]()** 
+**[<< back](../README.md)**, **[next >>]()** 
 
 # Data
 ```
