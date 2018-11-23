@@ -66,4 +66,4 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ---
 
-**[< back](./README.md)**, **[next >]()** 
+**[<< back](./README.md)**, **[next >>]()** 
