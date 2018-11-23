@@ -1,0 +1,41 @@
+/**
+ * A simple API operation that returns historical data of a given event type for a given device id
+ * @module listHistoricalData
+ * @param {String} eventType: one of "moving" or "stop". Mandatory. Specifies the type of event data we are interested in
+ * @param {String} deviceId: the device id, optional, returns data for all devices if not provided
+ * @param {Number} pageNumber: when paginating, specifies the number of the page to return, optional, defaults to 1
+ * @param {Number} resultsPerPage: when paginating, specifies the number of results to return per page, optional, defaults to 50
+ * @return {Arrray} historical data if successful, {errorCode: "xxx", errorDetail: "yyyy"} in case of failure
+ */
+
+var dataManager = require("../entities/datamanager");
+try {
+    
+    // retrive the parameters from the request. If the latter is sent using wss, then the parameters are sent as a stringified
+    // json with the following structure: {"body": {"param1":"value1", etc.}}, otherwise, they are found in request.parameters
+    var parameters = {};
+    if (request.parameters.body) {
+        parameters = JSON.parse(request.parameters.body);
+    }else {
+        parameters = request.parameters;
+    }
+    
+    var eventType = parameters.eventType;
+    if (!eventType) {
+        throw {
+            
+            errorCode: "Missing_Parameter",
+            errorDetail: "The eventType parameter is mandatory"
+        };
+    }
+    
+    // all the below parameters are optional. this is useful when demoing the application for a single device
+    // with a simple dashboard
+    var deviceId = parameters.deviceId;    
+    var pageNumber = parameters.pageNumber;
+    var resultsPerPage = parameters.resultsPerPage;    
+    
+    return dataManager.listHistoricalData(deviceId, pageNumber, resultsPerPage, eventType);
+}catch(exception){
+    return exception;
+}

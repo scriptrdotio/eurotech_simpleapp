@@ -1,0 +1,29 @@
+/**
+ * Formats data as expected by a map widget
+ */
+function formatData(latestData) {
+
+    var inclusionList = ["speed", "averageSpeed", "lat", "long", "id"];
+    var formattedData = {};
+    formattedData[latestData.id] = {
+
+        "current":[],
+        source:"simulator",
+        order: ["current"]
+    };
+
+    var valueObj = {};
+    for (var field in latestData) {
+
+        // only consider the fields that are part of the inclusion list
+        if (inclusionList.indexOf(field) > -1) {
+            
+            valueObj[field] = {
+                value: latestData[field]
+            };        
+        }
+    }
+
+    formattedData[latestData.id].current.push(valueObj);
+    return formattedData;
+}

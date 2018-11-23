@@ -1,0 +1,46 @@
+/*
+ * This script is subscribed to the "eurotech" channel, which receives the mqtt messags published by the devices
+ * It simply creates a data structure containing a device id  and the actual received payload, which is delegates 
+ * to a function that implements the required business logic.
+ * @module /api/inject
+ */
+
+// this script will take care of saving the data payload that is extracted from the received mqtt message
+var dataManager = require("../entities/datamanager");
+
+try {
+
+    // parse the raw message into a JSON object
+    var message = JSON.parse(request.rawBody);
+    
+    // the topic property of the received message contains the id of the device that published the message
+    var msgParts = message.topic.split("/");
+    var data = {
+
+        deviceId: msgParts[1],
+        payload: message.payload
+    }; 
+
+    // create key/value strcuture (event) that contains the device id , the location and any additional data contained in the payload
+    // such as speed and metrics when available
+    var event = {
+
+        id: data.deviceId,
+        // turn the location into a scriptr geolocation data structure 
+        location: Number(data.payload.position.latitude).toFixed(4) + "," + Number(data.payload.position.longitude).toFixed(4)           
+    };
+
+    if (data.payload.position.speed) {
+        event.speed =  data.payload.position.speed 
+    }
+
+    for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
+        event[data.payload.metric[i].name.toLowerCase()] = data.payload.metric[i].int_value // this code assumes all values are of type int
+    }
+
+    // persist the event 
+    return dataManager.saveData(event);
+}catch(exception) {
+    log.error("Could not handle receive message.\n"  +  JSON.stringify(exception));
+}
+
