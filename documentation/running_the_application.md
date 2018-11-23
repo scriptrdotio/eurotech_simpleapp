@@ -1,0 +1,68 @@
+# Running the application
+
+## Sign-in to Eurotech's PCN tranport simulator
+
+To start generating data using Eurotech's simulator, follow the steps described in [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md), that we summarize in the following:
+
+- Sign-in to the [simulator](https://cs.eurotech.com/gps-pcn-simulator/) **using your Everyware credentials** (account name, username and password). Make sure to use the credentials of an Everywhere user who is authorized to publish to the mqtt topics of the platform
+
+![Sign in to the simulator](./images/signin_to_simulator.png)
+
+*Image 1 - Sign in Eurotech PCN transport simulator*
+
+- Click on **create device** to create a new simulated device
+- Fill the form by entering any name for the device and start and end terminals (bus stations) 
+- Click on **Create device**
+
+![Create new simulated device](./images/create_new_device_in_simulator.png)
+
+*Image 2 - Sign in Eurotech PCN transport simulator*
+
+- Enter some data for the simulator. Best option is to copy/paste the below (obtained from  [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md))
+
+
+
+## Open the dashboard in the browser
+
+
+# Data
+```
+27.986519,-82.733574,pcn
+27.961201,-82.762928
+27.938304,-82.746792
+27.938304,-82.750397,pcn,paxin=2,paxout=1
+27.938304,-82.75692
+27.938304,-82.762585
+27.943612,-82.763271,pcn,paxin=1,paxout=2
+27.948919,-82.7631
+27.954378,-82.762756
+27.959837,-82.762413,pcn
+27.96393,-82.762756
+27.967418,-82.7631
+27.972269,-82.763443,pcn
+27.977878,-82.763443
+27.984852,-82.763443,pcn
+27.991825,-82.763443,pcn
+27.997433,-82.763443
+28.001374,-82.762928,pcn,paxin=5,paxout=1
+28.004708,-82.762756
+28.008194,-82.762585
+28.01168,-82.762756,pcn
+28.013347,-82.759151
+28.016681,-82.75898,pcn
+28.019712,-82.75898
+28.019257,-82.754345,pcn
+28.019105,-82.750053
+28.015771,-82.747135
+28.012437,-82.746277,pcn
+28.009406,-82.744217
+28.006072,-82.742157,pcn
+28.001525,-82.742157
+27.996372,-82.742157
+27.991218,-82.742157,pcn
+27.989854,-82.747307
+27.989399,-82.752113,pcn
+27.989551,-82.75486
+27.992886,-82.755032,pcn
+27.994098,-82.751083,pcn
+```
