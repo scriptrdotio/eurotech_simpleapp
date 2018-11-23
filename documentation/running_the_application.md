@@ -33,6 +33,11 @@ To start generating data using Eurotech's simulator, follow the steps described 
 
 ## Open the dashboard in the browser
 
+- From your [scriptr workspace](https://www.scriptr.io/workspace), expand the code tree on your left and open the **/eurotech_simpleapp/view/dashboard** script
+- Click on **View** in the toolbar to open the dashboard in the browser
+
+---
+**[<< back](./README.md)**, **[next >>]()** 
 
 # Data
 ```
