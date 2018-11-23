@@ -36,4 +36,6 @@ You need an account in the following:
   - Use /eurotech_simpleapp as destination folder
   - Click Install when done
   
- ![Import Application](../documentation/images/import_application.png)
+ ![Import Application](./documentation/images/import_application.png)
+
+*Image 2 - Import the application from Github to scriptr*
