@@ -25,6 +25,8 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 - Enter a name for your sub-domain (it has to be unique, scriptr will reject names that already exist)
 - click on close
 
+ ![Create sub-domain](./images/create_subdomain.png)
+
 *Image 2 - Create a scriptr sub-domain for your account*
 
 ### Create channels
