@@ -27,7 +27,7 @@ To start generating data using Eurotech's simulator, follow the steps described 
 - If you wish, configure the frequency at which messages will be published to Everywhere, as well as the max number of passenger, etc.
 - Once ready, click on **Start sending messages**
 
-![Send messages](./images/send_messages.png)
+![Publish messages](./images/send_data.png)
 
 *Image 4 - Send messages*
 
