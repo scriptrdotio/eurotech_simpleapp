@@ -18,9 +18,18 @@ To start generating data using Eurotech's simulator, follow the steps described 
 
 *Image 2 - Sign in Eurotech PCN transport simulator*
 
-- Enter some data for the simulator. Best option is to copy/paste the below (obtained from  [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md))
+- Enter some data for the simulator. Best option is to copy/paste the [data below](https://github.com/scriptrdotio/eurotech_simpleapp/blob/master/documentation/running_the_application.md#data) (obtained from  [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md))
 
+![Enter simulator data](./images/simulator_data.png)
 
+*Image 3 - Enter some data for the simulator*
+
+- If you wish, configure the frequency at which messages will be published to Everywhere, as well as the max number of passenger, etc.
+- Once ready, click on **Start sending messages**
+
+![Send messages](./images/send_messages.png]
+
+*Image 4 - Send messages*
 
 ## Open the dashboard in the browser
 
