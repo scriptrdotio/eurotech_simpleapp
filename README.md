@@ -12,6 +12,8 @@ On the scriptr side, the application is subscribed to the Everyware mqtt topic. 
 
 ![Application dashboard on scriptr](./documentation/images/dashboard.png)
 
+*Image 1 - The application's dashboard*
+
 ## Pre-requisites
 
 - You need to own an [Everyware account](https://console-sandbox.everyware-cloud.com/) (sandbox in this example) and you need to create an mqtt topic in the platform to which the simulator will publish data
