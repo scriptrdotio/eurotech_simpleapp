@@ -18,6 +18,13 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 
 ## Configure the application
 
+### Create a sub-domain for your scriptr account
+
+From your [scriptr workspace](https://www.scriptr.io/workspace), click on your username then select **Account**
+- Select the **Sub-domain** tab
+- Enter a name for your sub-domain (it has to be unique, scriptr will reject names that already exist)
+- click on close
+
 ### Create channels
 
 Channels are used by scriptr as abstractions of publish/subscribe mechanisms. We will create two channels:
