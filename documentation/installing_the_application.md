@@ -30,7 +30,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 - Enter a name for your channel (eurotech)
 - Click on the checkbox to the right to validate
 
-Proceed similarly to create the second channel (responseChannel) but this time
+Proceed similarly to create the second channel (responseChannel) but this time, check the **Allow anonymous subscription**
 
 ![Create channels](./images/create_channels.png)
 
