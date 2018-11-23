@@ -1,6 +1,6 @@
 # eurotech_simpleapp
 
-This is a simple demo app that demonstrates how easy it is to leverage data published by eurotech devices into scriptr.
+This is a simple demo app that demonstrates how easy it is to leverage data published by eurotech devices within scriptr.
 
 ## What the application does
 
@@ -89,3 +89,25 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 ![Create channels](./documentation/images/subscribe_to_channel.png)
 
 *Image 4 - Susbcribe to the eurotech channel*
+
+# Running the application
+
+## Sign-in to Eurotech's PCN tranport simulator
+
+To start generating data using Eurotech's simulator, follow the steps described in [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md), that we summarize in the following:
+
+- Sign-in to the [simulator](https://cs.eurotech.com/gps-pcn-simulator/) **using your Everyware crendentials** (account name, username and password). Make sure to use the credentials of an Everywhere user who is authorized to publish to the mqtt topics of the platform
+
+![Sign in to the simulator](.documentation/images/signin_to_simulator.png)
+
+*Image 5 - Sign in Eurotech PCN transport simulator*
+
+## Open the dashboard in the browser
+
+
+
+# Understanding the application
+
+## Device messages ingestion
+
+All the messages that are publish
