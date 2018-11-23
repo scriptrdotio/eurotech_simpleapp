@@ -1,8 +1,8 @@
 # Running the application
 
-## Sign-in to Eurotech's PCN tranport simulator
+## Generate device data using Eurotech's simulator
 
-To start generating data using Eurotech's simulator, follow the steps described in [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md), that we reproduce in the following:
+To start generating data using Eurotech's PCN transport simulator, follow the steps described in [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md), which we reproduce in the following:
 
 - Sign-in to the [simulator](https://cs.eurotech.com/gps-pcn-simulator/) **using your Everyware credentials** (account name, username and password). Make sure to use the credentials of an Everywhere user who is authorized to publish to the mqtt topics of the platform
 
