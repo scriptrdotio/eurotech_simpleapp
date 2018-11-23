@@ -20,7 +20,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 
 ### Create channels
 
-Channels are used by scriptr as abstraction of publish/subscribe mechanisms. We will create two channels:
+Channels are used by scriptr as abstractions of publish/subscribe mechanisms. We will create two channels:
 - The **eurotech** channel will be used to convey any message received on the Everyware topic we are subscribed to, to our application
 - The **responseChannel** channel will be used to publish data to our dashboard in real-time
 
