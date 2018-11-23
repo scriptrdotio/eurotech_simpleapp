@@ -8,7 +8,7 @@ To start generating data using Eurotech's simulator, follow the steps described 
 
 ![Sign in to the simulator](./images/signin_to_simulator.png)
 
-*Image 1 - Sign in Eurotech PCN transport simulator*
+*Image 1 - Sign-in to Eurotech PCN transport simulator*
 
 - Click on **create device** to create a new simulated device
 - Fill the form by entering any name for the device and start and end terminals (bus stations) 
