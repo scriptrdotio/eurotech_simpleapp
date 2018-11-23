@@ -20,7 +20,6 @@ You need an account in the following:
 
 - [Everyware account](https://console-sandbox.everyware-cloud.com/) (sandbox in this example) and you need to create an mqtt topic in the platform to which the simulator will publish data
 - [scriptr account](https://www.scriptr.io/login)
-- [Github](https://github.com/login) {the Github account won't be heavily used by is required to simpl
 
 ---
 **[<< back](../README.md)**, **[next >>](./installing_the_application.md)**
