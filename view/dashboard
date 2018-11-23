@@ -98,29 +98,29 @@
        
         vm.init = function() {
         }
-                vm.odometerFormatData60 = function(data){
+                vm.odometerFormatData1 = function(data){
                   return data.absolutein;
                 }
-                vm.odometerFormatData59 = function(data){
+                vm.odometerFormatData2 = function(data){
                   // we only care about the absoluteout field of the received data
 return data.absoluteout;
                 }
-                vm.odometerFormatData61 = function(data){
+                vm.odometerFormatData3 = function(data){
                   // we only need the value of the absolutepop field of the received data
 return data.absolutepop;
                 }
-                vm.lineFormatData64 = function(data){
+                vm.lineFormatData8 = function(data){
                   return data;
                 }
-                vm.speedometerFormatData63 = function(data){
+                vm.speedometerFormatData5 = function(data){
                   // we are only interested in the value of the averageSpeed field of the received data
 return data.averageSpeed;
                 }
-                vm.speedometerFormatData62 = function(data){
+                vm.speedometerFormatData6 = function(data){
                   // we're only interested in the value of the speed field of the received data
 return data.speed;
                 }
-                vm.mapFormatData58 = function(data){
+                vm.mapFormatData7 = function(data){
                   return data;
                 }
      });
@@ -148,7 +148,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData/'
 										api-params='{"eventType":"stop"}'
-                                  		on-format-data='vm.odometerFormatData60'
+                                  		on-format-data='vm.odometerFormatData1'
                            ></scriptr-odometer> </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData'
 										api-params='{"eventType":"stop"}'
-                                  		on-format-data='vm.odometerFormatData59'
+                                  		on-format-data='vm.odometerFormatData2'
                            ></scriptr-odometer> </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData'
 										api-params='{"eventType":"stop"}'
-                                  		on-format-data='vm.odometerFormatData61'
+                                  		on-format-data='vm.odometerFormatData3'
                            ></scriptr-odometer> </div>
                         </div>
                     </div>
@@ -205,7 +205,7 @@ return data.speed;
 										labels='["In", "Out", "Current"]'
 										colors='["#FCC717","#38B9D6"]'
 										transport='wss'
-										msg-tag='chart'
+										msg-tag='latest_historical'
 										data=''
 										grid-text-family='Source Sans Pro'
 										line-width='3'
@@ -233,7 +233,7 @@ return data.speed;
 										events='[null]'
 										api='eurotech_simpleapp/api/listHistoricalData'
 										api-params='{"eventType":"stop"}'
-                                  		on-format-data='vm.lineFormatData64'
+                                  		on-format-data='vm.lineFormatData8'
                            ></scriptr-chart> </div>
                         </div>
                     </div>
@@ -263,7 +263,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData'
 										api-params='{"eventType":"moving"}'
-                                  		on-format-data='vm.speedometerFormatData63'
+                                  		on-format-data='vm.speedometerFormatData5'
                            ></scriptr-speedometer> </div>
                         </div>
                     </div>
@@ -293,7 +293,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData'
 										api-params='{"eventType":"moving"}'
-                                  		on-format-data='vm.speedometerFormatData62'
+                                  		on-format-data='vm.speedometerFormatData6'
                            ></scriptr-speedometer> </div>
                         </div>
                     </div>
@@ -323,7 +323,7 @@ return data.speed;
 										http-method='GET'
 										api='eurotech_simpleapp/api/getLatestData'
 										api-params='{"eventType":"moving", "formatData":"true"}'
-                                  		on-format-data='vm.mapFormatData58'
+                                  		on-format-data='vm.mapFormatData7'
                            ></scriptr-map> </div>
                         </div>
                     </div>

@@ -59,13 +59,17 @@ function saveData(event) {
         throw resp.metadata;
     }
 
-    // publish updats to the dashboard
-    if(event.type == "moving") {
-        publishUpdatesMovingType(event);
+    // publish updates to the dashboard (current and historical values when stopping)
+    if(event.type == "moving") {        
+        publishUpdatesMovingType(event);       
     }else {
+
         publishUpdatesStopType(event);
+        var historicalData = listHistoricalData(event.deviceId, 1, 50, event.type);
+        publishUpdatedHistorical(historicalData);
     }
 
+    // return the key of the new document
     return resp.result.document.key;
 }
 
@@ -181,4 +185,13 @@ function publishUpdatesStopType(event) {
 
     // format event to be consumed by the map object and publish
     resp = publish("responseChannel", {id: "latest_map", result: util.formatData(event)});
+}
+
+/**
+ * Publish updated historical data
+ * @function publishUpdatesToHistorical
+ */
+function publishUpdatedHistorical(data) {
+
+    var resp = publish("responseChannel", {id: "latest_historical", result: data});
 }
