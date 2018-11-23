@@ -56,9 +56,23 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 - Enter a name for your channel (eurotech)
 - Click on the checkbox to the right to validate
 
-Proceed similarly to create the second channel (responseChannel)
+Proceed similarly to create the second channel (responseChannel) but this time
 
 ![Create channels](./documentation/images/create_channels.png)
 
+*Image 3 - Create your channels*
+
 ### Subscribe to the Everyware MQTT topic
 
+Data are published in two distinct topics hosted by the Everyware platform
+
+- {account}/{client_id}/PCNPublisher/LocationPublisher/location. Published data are position_speed, position_longitude, position_latitude
+- {account}/{client_id}/PCNPublisher/Bus. Published data are position_longitude, position_latitude, AbsolutePop, AbsoluteOut, AbsoluteIn 
+
+You need to create an endpoint + bridge on scriptr to subscribe to the above. On that purpose, you will use the following configuration:
+
+- URL: mqtt://broker-sandbox.everyware-cloud.com
+- Port: 1883
+- Username: *your Everyware username*
+- Password: *your Everyware password*
+- Topic: *your_everyware_topic*/+/#
