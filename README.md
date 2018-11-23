@@ -56,9 +56,36 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 - Enter a name for your channel (eurotech)
 - Click on the checkbox to the right to validate
 
-Proceed similarly to create the second channel (responseChannel)
+Proceed similarly to create the second channel (responseChannel) but this time
 
 ![Create channels](./documentation/images/create_channels.png)
 
+*Image 3 - Create your channels*
+
 ### Subscribe to the Everyware MQTT topic
 
+Data are published in two distinct topics hosted by the Everyware platform
+
+- {account}/{client_id}/PCNPublisher/LocationPublisher/location. Published data are position_speed, position_longitude, position_latitude
+- {account}/{client_id}/PCNPublisher/Bus. Published data are position_longitude, position_latitude, AbsolutePop, AbsoluteOut, AbsoluteIn 
+
+You need to create an endpoint + bridge on scriptr to subscribe to the above. On that purpose, you will use the following configuration:
+
+- URL: mqtt://broker-sandbox.everyware-cloud.com
+- Port: 1883
+- Username: *your Everyware username*
+- Password: *your Everyware password*
+- Topic: *your_everyware_topic*/+/#
+
+### Subscribe the inject script to the eurotech channel
+
+The above configuration subscribes your scriptr account to your mqtt topic on Everyware. All messages that are published to the latter will automatically be received by your **eurotech** channel. In order to start working on the payload contained in these messages, you just need to subscribe a script to the **eurotech** channel:
+
+- Open the **/eurotech_simpleapp/api/inject** script by expanding the code tree on the left of your [workspace](https://www.scriptr.io/workspace)
+- In the tool bar click on **Subscribe**
+- In the channels list, switch the toggle on for **eurotech**
+- Click on Close
+
+![Create channels](./documentation/images/subscribe_to_channel.png)
+
+*Image 4 - Susbcribe to the eurotech channel*
