@@ -16,7 +16,7 @@ To start generating data using Eurotech's simulator, follow the steps described 
 
 ![Create new simulated device](./images/create_new_device_in_simulator.png)
 
-*Image 2 - Sign in Eurotech PCN transport simulator*
+*Image 2 - Create a device*
 
 - Enter some data for the simulator. Best option is to copy/paste the [data below](https://github.com/scriptrdotio/eurotech_simpleapp/blob/master/documentation/running_the_application.md#data) (obtained from  [Eurotech's documentation](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/web-pcn-sim.md))
 
