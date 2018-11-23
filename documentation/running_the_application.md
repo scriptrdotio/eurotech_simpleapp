@@ -33,6 +33,8 @@ To start generating data using Eurotech's PCN transport simulator, follow the st
 
 ## Open the dashboard in the browser
 
+Once data starts being generated, it will automatically flow into your scriptr account (provided you configured it already) and be reflected in real time in the dashboard:
+
 - From your [scriptr workspace](https://www.scriptr.io/workspace), expand the code tree on your left and open the **/eurotech_simpleapp/view/dashboard** script
 - Click on **View** in the toolbar to open the dashboard in the browser
 
