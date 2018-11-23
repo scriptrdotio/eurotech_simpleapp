@@ -25,6 +25,8 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 - Enter a name for your sub-domain (it has to be unique, scriptr will reject names that already exist)
 - click on close
 
+*Image 2 - Create a scriptr sub-domain for your account*
+
 ### Create channels
 
 Channels are used by scriptr as abstractions of publish/subscribe mechanisms. We will create two channels:
@@ -41,7 +43,7 @@ Proceed similarly to create the second channel (responseChannel) but this time, 
 
 ![Create channels](./images/create_channels.png)
 
-*Image 2 - Create your channels*
+*Image 3 - Create your channels*
 
 ### Subscribe to the Everyware MQTT topic
 
@@ -69,7 +71,7 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ![Create channels](./images/subscribe_to_channel.png)
 
-*Image 3 - Susbcribe to the eurotech channel*
+*Image 4 - Susbcribe to the eurotech channel*
 
 ---
 
