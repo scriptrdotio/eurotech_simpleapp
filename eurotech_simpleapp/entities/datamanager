@@ -1,0 +1,197 @@
+/**
+ * This script is used to save the event data that are published by the device on the buses
+ * and it is also used to query the values of theses event (latest or historical)
+ * It leverages scriptr's document module (API)
+ */
+
+var documentModule = require("document");
+var util = require("./util");
+
+// the below line is not required for the workshop's participants. used here because we have two stores (DefaultStore and eurotech)
+// the current workshop application uses the former
+var document = documentModule.getInstance("DefaultStore");
+
+var log = require("log");
+log.setLevel("info");
+
+/**
+ * Save data into scriptr's storage and ask for publishing the data
+ * There are two types of events that are published by the devices on the bus:
+ * - events sent when the bus is moving: they contain deviceid, location and speed data
+ * - events sent when the bus stops to drop off, onboard passengers: they contain deviceid, absolutein, absoluteout and absolutepop data 
+ * Therefore, when saving the data, we add a "type" field of which value is set to "moving" or to "stop" depending on the received event
+ * @param {Object} [event]
+ * @param {String} [event.deviceId]: the id of the device that published the data
+ * @param {Geolocation} [event.location]: the location of the device when data was published
+ * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
+ * @param {Number} [event.absolutein]: how many passengers got on the bus (optional)
+ * @param {Number} [event.absoluteout]: how many passengers got off the bus (optional)
+ * @param {Number} [event.absolutepop]: number of passengers on the bus (optional)
+ * @return {String} the key of the created document
+ */
+function saveData(event) {
+
+    // split event.location into event.lat and event.long and add them to the event
+    if (event.location) {
+
+        var loc = event.location.split(",");
+        event.lat = loc[0];
+        event.long = loc[1];
+    }
+
+    // depending on the received event, we create one of two types of documents: first type store data related to the movement of the bus (contains speed)
+    // and the second document type is for data related to passengers going off/on the bus (absolutein, etc.)
+    event.type = event.speed ? "moving" : "stop";  
+
+    // add some metadata to the event to inform scriptr that the speed, absolutein, absoluteout and absolutepop fields are numeric values
+    event["meta.types"] = {
+
+        "speed": "numeric",
+        "absolutein": "numeric",
+        "absoluteout": "numeric",
+        "absolutepop": "numeric"
+    };
+
+    var resp = document.create(event);
+    if (resp.metadata.status == "failure") {
+
+        log.error("documentmanager.saveData() failed:\n" + JSON.stringify(resp.metadata));
+        throw resp.metadata;
+    }
+
+    // publish updates to the dashboard (current and historical values when stopping)
+    if(event.type == "moving") {        
+        publishUpdatesMovingType(event);       
+    }else {
+
+        publishUpdatesStopType(event);
+        var historicalData = listHistoricalData(event.deviceId, 1, 50, event.type);
+        publishUpdatedHistorical(historicalData);
+    }
+
+    // return the key of the new document
+    return resp.result.document.key;
+}
+
+/**
+ * This function is used to retrieve the latest data of a certain event type ("moving" or "stop" event) for a given device id
+ * The function actually leverages listHistoricalData by asking for a single document (latest) and getAverageSpeed()
+ * @function getLatestData
+ * @param {String} deviceId: optional, if not passed, returns last record of the chosen event type
+ * @param {String} eventType: one of "moving" or "stop", optional, defaults to "moving" if not provided
+ */
+function getLatestData(deviceId, eventType) {
+
+    var latestData = listHistoricalData(deviceId, 1, 1, eventType)[0];
+
+    // add the average speed to the data and return it
+    latestData.averageSpeed = getAverageSpeed(deviceId);
+
+    return latestData
+}
+
+/**
+ * This function returns the last n known records (documents) of a certain event type for a given device id  
+ * @function listHistoricalData
+ * @param {String} deviceId: the identifier of the concerned device, optional, if no id is passed, returns data for all devices
+ * @param {Number} pageNumber: when paginating, provides the number of the page to return, optional, defaults to 1
+ * @param {Number} resultsPerPage: when paginating, specifies how many documents to return per query, optional, defaults to 50 (scriptr's default)
+ * @param {String} eventType: one of "moving" or "stop". optional, always defaults to "moving" 
+ */
+function listHistoricalData(deviceId, pageNumber, resultsPerPage, eventType) {
+
+    var queryParams = {        
+
+        fields: "*",
+        query: 'type="' + (eventType ? eventType :  "moving") + '"',
+        count: true
+    };
+
+    if (deviceId){
+        queryParams.query = 'deviceId="' + deviceId + '"';
+    }
+
+    if (pageNumber) {
+        queryParams.pageNumber = pageNumber;
+    }
+
+    if (resultsPerPage) {
+        queryParams.resultsPerPage = resultsPerPage;
+    }
+
+    var resp = document.query(queryParams); 
+    if (resp.metadata.status == "failure") {
+
+        log.error("documentmanager.listHistoricalData() failed:\n" + JSON.stringify(resp.metadata));
+        throw resp.metadata;
+    }
+
+    return resp.result.documents;
+}
+
+/**
+ * Leverages the aggregation capabilities of scriptr to calculate the average speed of the bus represented by the provided device
+ * @function getAverageSpeed
+ * @param {String} deviceId: the device id, optional, calculates average speed for all devices if not provided
+ * @return {Number} average speed
+ */
+function getAverageSpeed(deviceId) {
+
+    var queryParams = {
+
+        query: 'type="moving"',
+        fields: "speed",
+        aggregateExpression: "avg($speed)",
+        aggregateGlobal: true
+    };
+
+    var resp = document.query(queryParams);
+    if (resp.metadata.status == "failure") {
+
+        log.error("documentmanager.getAverageSpeed() failed:\n" + JSON.stringify(resp.metadata));
+        throw resp.metadata;
+    }
+
+    return resp.result.aggregate.globalScope.value;
+}
+
+/**
+ * Publish an event of type "moving" towards the dashboard
+ * @function publishUpdatesMovingType
+ * @param {Object} [event]
+ * @param {String} [event.deviceId]: the id of the device that published the data
+ * @param {Geolocation} [event.location]: the location of the device when data was published
+ * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
+ */
+function publishUpdatesMovingType(event) {
+
+    // add average speed to the event
+    event.averageSpeed = getAverageSpeed(event.deviceId);
+    var resp = publish("responseChannel", {id: "latest_moving", result: event});
+}
+
+/**
+ * Publish event of type "stop" towards the dashboard
+ * @function publishUpdatesStopType
+ * @param {Object} [event]
+ * @param {String} [event.deviceId]: the id of the device that published the data
+ * @param {Number} [event.absolutein]: how many passengers got on the bus (optional)
+ * @param {Number} [event.absoluteout]: how many passengers got off the bus (optional)
+ * @param {Number} [event.absolutepop]: ? (optional)
+ */
+function publishUpdatesStopType(event) {
+
+    var resp = publish("responseChannel", {id: "latest_stop", result: event});
+
+    // format event to be consumed by the map object and publish
+    resp = publish("responseChannel", {id: "latest_map", result: util.formatData(event)});
+}
+
+/**
+ * Publish updated historical data
+ * @function publishUpdatesToHistorical
+ */
+function publishUpdatedHistorical(data) {
+
+    var resp = publish("responseChannel", {id: "latest_historical", result: data});
+}
