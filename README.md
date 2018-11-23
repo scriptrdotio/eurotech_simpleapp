@@ -26,7 +26,9 @@ You need an account in the following:
 
 # Installing the application
 
-- From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen
+## Import from Github
+
+From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen:
 - Click on **Install Modules**
 - In the Modules dialog:
   - Expand +Add Custom Module from GitHub 
@@ -39,3 +41,24 @@ You need an account in the following:
  ![Import Application](./documentation/images/import_application.png)
 
 *Image 2 - Import the application from Github to scriptr*
+
+## Configure the application
+
+### Create channels
+
+Channels are used by scriptr as abstraction of publish/subscribe mechanisms. We will create two channels:
+- The **eurotech** channel will be used to convey any message received on the Everyware topic we are subscribed to, to our application
+- The **responseChannel** channel will be used to publish data to our dashboard in real-time
+
+From your [scriptr workspace](https://www.scriptr.io/workspace), click on your username in the top right corner of the screen:
+- Click on Settings then select the **Channels** tab
+- In the dialog, expand +Add Channel
+- Enter a name for your channel (eurotech)
+- Click on the checkbox to the right to validate
+
+Proceed similarly to create the second channel (responseChannel)
+
+![Create channels](./documentation/images/create_channels.png)
+
+### Subscribe to the Everyware MQTT topic
+
