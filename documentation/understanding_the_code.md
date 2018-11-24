@@ -2,7 +2,7 @@
 
 This section describes in details the code of the application. Since the code itself is commented it should be self explanatory. Therefore, you can skip reading this document and get back to it in case you need clarifications.
 
-- Structure of the application
+- [Structure of the application](./understanding_the_code.md#structure-of-the-application)
 - Ingesting the device messages (events)
 - Persisting the events
 - Reading the persisted events
