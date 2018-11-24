@@ -174,3 +174,20 @@ return resp.result.aggregate.globalScope.value;
 ```
 
 [back](./understanding_the_code.md#understanding-the-applications-code)
+
+## Publishing updates to the dashboard
+
+As we will see it in the next paragraphs, our dashboard subscribes to the **responseChannel** that [we created when installing the application](./installing_the_application.md#create-channels), to consume any messages that are published to the channel. This ability allows us to broadcast data in real time to the dashboard, by publishing any update to the corresponding channel.
+
+We use the native **publish(channelName, message)** method to publish to scriptr channels, by specifying the name of the channel to publish to and the message (any data structure) to publish. When publishing to a scriptr dashboard, the message should adopt the following predefined data structure: ```{id: filter_name, result: some_appropriate_data}```:
+- the id field is used to target a specific widget (or group of widgets) of the dashboard
+- the result field contains data in the format that is expected by the targeted widget
+
+In the **/entities/datamanger** script, three functions are in charge of publishing updates to the dashboard:
+
+- publishUpdatesMovingType(): publishes events of type "moving" in addition to the average speed. As you can see, it sets the id to "latest_moving". which means that any widget listening to this id will consume the message
+```
+event.averageSpeed = getAverageSpeed(event.deviceId);
+var resp = publish("responseChannel", {id: "latest_moving", result: event});
+```
+- publishUpdatesStopType(): publishes events of type "stop" as well as 
