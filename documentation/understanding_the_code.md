@@ -14,11 +14,11 @@ var message = JSON.parse(request.rawBody);
 - the script then extracts the device id from the name of the topic to which the message was published (this name is provided in the mqtt message)
 ```
 var msgParts = message.topic.split("/");
-    var data = {
+var data = {
 
-        deviceId: msgParts[1],
-        payload: message.payload
-    }; 
+   deviceId: msgParts[1],
+   payload: message.payload
+}; 
 
 ```
 - the message payload is then transformed into a flat key/value pairs structure. Note that a device can publish two types of messages:   
@@ -26,22 +26,22 @@ var msgParts = message.topic.split("/");
   - the other type is related to the number of passengers gettings of/on the bus and its positon (absolutein, absoluteout, absoluteopop, lat, lon)
 ```
 var event = {
-        id: data.deviceId
-    };
+    id: data.deviceId
+};
+   
+if (data.payload.position.speed) {    
+    event.speed = data.payload.position.speed;
+}
     
-    if (data.payload.position.speed) {    
-        event.speed = data.payload.position.speed;
-    }
-    
-    if (data.payload.position.latitude) {
+if (data.payload.position.latitude) {
         
-        event.lat = Number(data.payload.position.latitude).toFixed(4);
-        event.long = Number(data.payload.position.longitude).toFixed(4);
-    }
+    event.lat = Number(data.payload.position.latitude).toFixed(4);
+    event.long = Number(data.payload.position.longitude).toFixed(4);
+}
 
-    for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
-        event[data.payload.metric[i].name.toLowerCase()] = data.payload.metric[i].int_value // this code assumes all values are of type int
-    }
+for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
+   event[data.payload.metric[i].name.toLowerCase()] = data.payload.metric[i].int_value // this code assumes all values are of type int
+}
 ```
 - once this data structure is ready, the inject script hands it over to the saveData() function defined in the datamanager script
 ```
