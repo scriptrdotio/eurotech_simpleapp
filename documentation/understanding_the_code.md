@@ -3,8 +3,8 @@
 This section describes in details the code of the application. Since the code itself is commented it should be self explanatory. Therefore, you can skip reading this document and get back to it in case you need clarifications.
 
 - [Structure of the application](./understanding_the_code.md#structure-of-the-application)
-- Ingesting the device messages (events)
-- Persisting the events
+- [Ingesting the device messages (events)](./understanding_the_code.md#ingesting-the-device-messages-events)
+- [Persisting the events](./understanding_the_code.md#persisting-the-events)
 - Reading the persisted events
 - Publishing updates to the dashboard
 - Building the dashboard
@@ -65,7 +65,7 @@ return dataManager.saveData(event);
 
 ## Persisting the events
 
-The **/entities/datamanager** script deals with the CRUD operation executed on the data that are received from the devices. More particularily, the saveData(event) method persists it into scriptr's NoSQL data store.
+The **/entities/datamanager** script deals with the CRUD operation executed on the data that are received from the devices. More particularily, the **saveData(event)** method persists it into scriptr's NoSQL data store.
 
 - First thing the saveData() does is to add the "type" field that will be used to determine the type of event that is received. If the latter contains speed, lat and long data, we set the type to "moving". Otherwise (we received passengers metrics and position) we set the value of type to "stop"
 ```
@@ -92,4 +92,49 @@ var resp = document.create(event);
 
 ## Reading the persisted events
 
-Our applications' dashboard has to display the historical and latest events values 
+Our applications' dashboard has to display the historical and latest events values, as well as the average speed of the bus. Querying the persisted events to provide the latter is done by 3 functions defined in the **/entities/datamanager** script
+
+### Reading historical event values
+
+This is the job of the **listHistoricalData(deviceId, pageNumber, resultsPerPage, eventType)** function. It is a generic function that retrieves the events of a given type (i.e "moving" or "stop" as described earlier), for a given device id. If the latter is not provided, it reads the events of the provided type, for all devices.
+
+- first thing the function does it to prepare the query that will be executed agains scriptr's data store. The query has to specify:
+  - the fields to return. In our case, we instruct scriptr to return all fields  - '*'
+  - the number (index) of the page to return (scriptr automatically paginates the results if their total number is > 50)
+  - the max number of results to return per page (this number has to be <= 50, which is the default value)
+  - the count field to instruct scriptr to return the total count of results
+  - most importantly, the query expression, which a string that defines the filtering criteria to query the events. In our case, we will be filtering by event type and - if available - device id, e.g. 'type="moving" and id="scriptr-bus-002"
+```
+var queryParams = {        
+
+     fields: "*",
+     query: 'type="' + (eventType ? eventType :  "moving") + '"',
+     count: true
+ };
+
+ if (deviceId){
+     queryParams.query = 'deviceId="' + deviceId + '"';
+ }
+
+ if (pageNumber) {
+     queryParams.pageNumber = pageNumber;
+ }
+
+ if (resultsPerPage) {
+     queryParams.resultsPerPage = resultsPerPage;
+ }
+```
+- next thing is to execute our query by passing the above to the  query() function of the native **document**, required ealier in the script
+```
+var resp = document.query(queryParams); 
+return resp.result.documents;
+```
+
+### Reading latest event values
+
+The **getLatestData(deviceId, eventType)** is in charge of returning the latest event data of a given event type for a givend device id. If the device id is not provided, it just returns the latest event of the specified event type. 
+
+By default, queries in scriptr always retun a list of record sorted by descending creation date. Therefore, we can reuse the listHistoricalData() function and only return the first item on the list.
+```
+var latestData = listHistoricalData(deviceId, 1, 1, eventType)[0];
+```
