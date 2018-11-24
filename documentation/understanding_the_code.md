@@ -5,7 +5,7 @@ This section describes in details the code of the application. Since the code it
 - [Structure of the application](./understanding_the_code.md#structure-of-the-application)
 - [Ingesting the device messages (events)](./understanding_the_code.md#ingesting-the-device-messages-events)
 - [Persisting the events](./understanding_the_code.md#persisting-the-events)
-- Reading the persisted events
+- [Reading the persisted events](./understanding_the_code.md#reading-the-persisted-events)
 - Publishing updates to the dashboard
 - Building the dashboard
 
@@ -16,6 +16,8 @@ The application is decomposed in three layers:
 - /view: it contains the dashboard script. The dashboard invokes the scripts in the /api layer
 - /api: it defines a simple API layer on top of the - simple - logic of the application and contains 3 simple scripts that implement API operation (getLatestData, getHistoricalData and inject)
 - /entities: it contains scripts that implement the logic of the application. 
+
+[back](./understanding_the_code.md#understanding-the-applications-code)
 
 ## Ingesting the device messages (events)
 
@@ -62,6 +64,7 @@ for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
 var dataManager = require("../entities/datamanager");
 return dataManager.saveData(event);
 ```
+[back](./understanding_the_code.md#understanding-the-applications-code)
 
 ## Persisting the events
 
@@ -89,6 +92,8 @@ event["meta.types"] = {
 var documentModule = require("document");
 var resp = document.create(event);
 ```
+
+[back](./understanding_the_code.md#understanding-the-applications-code)
 
 ## Reading the persisted events
 
@@ -124,7 +129,7 @@ var queryParams = {
      queryParams.resultsPerPage = resultsPerPage;
  }
 ```
-- next thing is to execute our query by passing the above to the  query() function of the native **document**, required ealier in the script
+- next thing is to execute our query by passing the above to the  query() function of the native **document** module, required ealier in the script
 ```
 var resp = document.query(queryParams); 
 return resp.result.documents;
@@ -138,3 +143,34 @@ By default, queries in scriptr always retun a list of record sorted by descendin
 ```
 var latestData = listHistoricalData(deviceId, 1, 1, eventType)[0];
 ```
+
+### Calculating the average speed
+
+Scriptr's simple yet powerful querying mechanism allows you to execute aggregates functions on your data (min, max, sum, average, etc.). We leverage this ability in the **getAverageSpeed(deviceId)** function.
+
+- first, we defined the query parameters by specifying:
+  - the fields to return, in our case, we're only interested in "speed"
+  - the aggregate expression, i.e. the aggregate function to apply. In our case, it is the average function applied to speed
+  - the aggregare scope, i.e. specify if the aggregation should apply on all the recorded events or only on a page by page basis
+  - the query expression, i.e. the filter. In our case, we only need to consider the events that contain speed, i.e. those of type 
+  "moving", for a given device id when the latter is provided.
+ ```
+ var queryParams = {
+
+     query: 'type="moving"',
+     fields: "speed",
+     aggregateExpression: "avg($speed)",
+     aggregateGlobal: true
+ };
+
+ if (deviceId) {
+     queryParams.query = queryParams.query + ' and deviceId="' + deviceId + '"';
+ }
+ ```
+- next, we execute the query by passing the above parameters to the query() function of the native **document** module.
+```
+var resp = document.query(queryParams);
+return resp.result.aggregate.globalScope.value;
+```
+
+[back](./understanding_the_code.md#understanding-the-applications-code)
