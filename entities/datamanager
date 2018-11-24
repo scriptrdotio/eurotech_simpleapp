@@ -139,6 +139,10 @@ function getAverageSpeed(deviceId) {
         aggregateGlobal: true
     };
 
+    if (deviceId) {
+        queryParams.query = queryParams.query + ' and deviceId="' + deviceId + '"';
+    }
+
     var resp = document.query(queryParams);
     if (resp.metadata.status == "failure") {
 
