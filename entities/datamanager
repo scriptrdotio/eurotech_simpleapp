@@ -7,7 +7,7 @@
 var documentModule = require("document");
 var util = require("./util");
 
-// the below line is not required if you only have one store (DefaultStore) in your account. You can safely remove them if this is the case
+// the below line is not required if you only have one store (DefaultStore) in your account. You can safely remove it if this is the case
 var document = documentModule.getInstance("DefaultStore");
 
 var log = require("log");
