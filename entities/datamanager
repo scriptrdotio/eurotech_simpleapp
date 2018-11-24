@@ -1,6 +1,6 @@
 /**
  * This script is used to save the event data that are published by the device on the buses
- * and it is also used to query the values of theses event (latest or historical)
+ * and it is also used to query the values of theses events (latest or historical)
  * It leverages scriptr's document module (API)
  */
 
