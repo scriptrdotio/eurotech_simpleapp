@@ -15,8 +15,8 @@ var log = require("log");
 log.setLevel("info");
 
 /**
- * Save data into scriptr's storage and ask for publishing the data
- * There are two types of events that are published by the devices on the bus:
+ * Save data into scriptr's storage then publishes the data updates (to be consumed by the dashboard)
+ * There are two types of events that are emitted by the devices on the bus:
  * - events sent when the bus is moving: they contain deviceid, location and speed data
  * - events sent when the bus stops to drop off, onboard passengers: they contain deviceid, absolutein, absoluteout and absolutepop data 
  * Therefore, when saving the data, we add a "type" field of which value is set to "moving" or to "stop" depending on the received event
