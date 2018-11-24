@@ -6,8 +6,8 @@ This section describes in details the code of the application. Since the code it
 - [Ingesting the device messages (events)](./understanding_the_code.md#ingesting-the-device-messages-events)
 - [Persisting the events](./understanding_the_code.md#persisting-the-events)
 - [Reading the persisted events](./understanding_the_code.md#reading-the-persisted-events)
-- Publishing updates to the dashboard
-- Building the dashboard
+- [Publishing updates to the dashboard](./understanding_the_code.md#publishing-updates-to-the-dashboard)
+- [Displaying data in the dashboard](./understanding_the_code.md#displaying-data-in-the-dashboard)
 
 ## Structure of the application
 
@@ -190,4 +190,20 @@ In the **/entities/datamanger** script, three functions are in charge of publish
 event.averageSpeed = getAverageSpeed(event.deviceId);
 var resp = publish("responseChannel", {id: "latest_moving", result: event});
 ```
-- publishUpdatesStopType(): publishes events of type "stop" as well as 
+- publishUpdatesStopType(): publishes events of type "stop". The function actually performs to publish() calls, one of them containing data specifically formatted to be used by the map widget of the dashboard
+```
+var resp = publish("responseChannel", {id: "latest_stop", result: event});
+resp = publish("responseChannel", {id: "latest_map", result: util.formatData(event)});
+```
+- publishUpdatedHistorical() publishes historical event values to the channel
+```
+var resp = publish("responseChannel", {id: "latest_historical", result: data});
+```
+## Displaying data in the dashboard
+
+In the [workspace](https://www.scriptr.io/workspace), expand the code tree in the left pane and double click on **/view/dashboard** to open the dashboard designed for the application. The dashboard is composed of the following widgets:
+- 1 map, that displays the current and former position of the bus
+- 3 odometers, respectively displaying the last number of passengers hot got on the bus, the last number of passengers who got of the bus and the current number of passengers on the bus
+- 2 speedometers, respectively showing the current bus speed and current average speed of the bus
+- A line chart, displaying the variation of passenges who got on/off the bus and those who are on the bus
+
