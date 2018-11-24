@@ -1,12 +1,23 @@
 # Understanding the application's code
 
-- Ingesting the device messages
-- Persisting the data
-- Reading the persisted data
+This section describes in details the code of the application. Since the code itself is commented it should be self explanatory. Therefore, you can skip reading this document and get back to it in case you need clarifications.
+
+- Structure of the application
+- Ingesting the device messages (events)
+- Persisting the events
+- Reading the persisted events
 - Publishing updates to the dashboard
 - Building the dashboard
 
-## Ingesting the device messages
+## Structure of the application
+
+The application is decomposed in three layers:
+
+- /view: it contains the dashboard script. The dashboard invokes the scripts in the /api layer
+- /api: it defines a simple API layer on top of the - simple - logic of the application and contains 3 simple scripts that implement API operation (getLatestData, getHistoricalData and inject)
+- /entities: it contains scripts that implement the logic of the application. 
+
+## Ingesting the device messages (events)
 
 The **/api/inject** script automatically receives the mqtt messages that are published by the devices and broadcast by Everyware:
 
@@ -52,7 +63,7 @@ var dataManager = require("../entities/datamanager");
 return dataManager.saveData(event);
 ```
 
-## Persisting the data
+## Persisting the events
 
 The **/entities/datamanager** script deals with the CRUD operation executed on the data that are received from the devices. More particularily, the saveData(event) method persists it into scriptr's NoSQL data store.
 
@@ -73,10 +84,12 @@ event["meta.types"] = {
 };
 
 ```
-- to perist the data, the saveData() function only needs to require scriptr's native **document module** and invoke it's **create()** function, passing it the event + metada:
+- to perist the data, the saveData() function only needs to require scriptr's native **document module** and invoke it's **create()** function, passing it the event + metadata:
 ```
 var documentModule = require("document");
 var resp = document.create(event);
 ```
 
+## Reading the persisted events
 
+Our applications' dashboard has to display the historical and latest events values 
