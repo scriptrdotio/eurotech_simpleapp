@@ -21,17 +21,20 @@ try {
         payload: message.payload
     }; 
 
-    // create key/value strcuture (event) that contains the device id , the location and any additional data contained in the payload
+    // create key/value strucuture (event) that contains the device id , the location and any additional data contained in the payload
     // such as speed and metrics when available
     var event = {
-
-        id: data.deviceId,
-        // turn the location into a scriptr geolocation data structure 
-        location: Number(data.payload.position.latitude).toFixed(4) + "," + Number(data.payload.position.longitude).toFixed(4)           
+        id: data.deviceId
     };
-
-    if (data.payload.position.speed) {
-        event.speed =  data.payload.position.speed 
+    
+    if (data.payload.position.speed) {    
+        event.speed = data.payload.position.speed;
+    }
+    
+    if (data.payload.position.latitude) {
+        
+        event.lat = Number(data.payload.position.latitude).toFixed(4);
+        event.long = Number(data.payload.position.longitude).toFixed(4);
     }
 
     for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
