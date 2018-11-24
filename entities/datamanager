@@ -1,6 +1,6 @@
 /**
  * This script is used to save the event data that are published by the device on the buses
- * and it is also used to query the values of theses events (latest or historical)
+ * and it is also used to query the values of theses event (latest or historical)
  * It leverages scriptr's document module (API)
  */
 
@@ -15,14 +15,15 @@ var log = require("log");
 log.setLevel("info");
 
 /**
- * Save data into scriptr's storage then publishes the data updates (to be consumed by the dashboard)
- * There are two types of events that are emitted by the devices on the bus:
+ * Save data into scriptr's storage and ask for publishing the data
+ * There are two types of events that are published by the devices on the bus:
  * - events sent when the bus is moving: they contain deviceid, location and speed data
  * - events sent when the bus stops to drop off, onboard passengers: they contain deviceid, absolutein, absoluteout and absolutepop data 
  * Therefore, when saving the data, we add a "type" field of which value is set to "moving" or to "stop" depending on the received event
  * @param {Object} [event]
  * @param {String} [event.deviceId]: the id of the device that published the data
- * @param {Geolocation} [event.location]: the location of the device when data was published
+ * @param {Number} [event.lat]: the latitude of the device when data was published
+ * @param {Number} [event.long]: the longitude of the device when data was published
  * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
  * @param {Number} [event.absolutein]: how many passengers got on the bus (optional)
  * @param {Number} [event.absoluteout]: how many passengers got off the bus (optional)
@@ -30,14 +31,6 @@ log.setLevel("info");
  * @return {String} the key of the created document
  */
 function saveData(event) {
-
-    // split event.location into event.lat and event.long and add them to the event
-    if (event.location) {
-
-        var loc = event.location.split(",");
-        event.lat = loc[0];
-        event.long = loc[1];
-    }
 
     // depending on the received event, we create one of two types of documents: first type store data related to the movement of the bus (contains speed)
     // and the second document type is for data related to passengers going off/on the bus (absolutein, etc.)
@@ -47,6 +40,8 @@ function saveData(event) {
     event["meta.types"] = {
 
         "speed": "numeric",
+        "lat": "numeric",
+        "long": "numeric",
         "absolutein": "numeric",
         "absoluteout": "numeric",
         "absolutepop": "numeric"
@@ -160,7 +155,9 @@ function getAverageSpeed(deviceId) {
  * @function publishUpdatesMovingType
  * @param {Object} [event]
  * @param {String} [event.deviceId]: the id of the device that published the data
- * @param {Geolocation} [event.location]: the location of the device when data was published
+ * @param {Number} [event.long]: the longitude of the device when data was published
+ * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
+ * @param {Number} [event.absolutein]: how many passengers got on the bus (optional)
  * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
  */
 function publishUpdatesMovingType(event) {
