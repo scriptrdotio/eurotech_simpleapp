@@ -11,7 +11,7 @@ This section describes in details the code of the application. Since the code it
 
 ## Structure of the application
 
-The application is decomposed in three layers:
+The application is composed of three layers:
 
 - /view: it contains the dashboard script. The dashboard invokes the scripts in the /api layer
 - /api: it defines a simple API layer on top of the - simple - logic of the application and contains 3 simple scripts that implement API operation (getLatestData, getHistoricalData and inject)
@@ -38,8 +38,8 @@ var data = {
 
 ```
 - the message payload is then transformed into a flat key/value pairs structure. Note that a device can publish two types of messages:   
-  - one type is related to the bus speed and its position (speed, lat, lon) 
-  - the other type is related to the number of passengers gettings of/on the bus and its positon (absolutein, absoluteout, absoluteopop, lat, lon)
+  - one type is related to the bus speed and its position (speed, latitude, longitude) 
+  - the other type is related to the number of passengers gettings of/on the bus and its positon (absolutein, absoluteout, absoluteopop, latitude, longitude)
 ```
 var event = {
    id: data.deviceId
@@ -59,7 +59,7 @@ for (var i = 0; data.payload.metric && i < data.payload.metric.length; i++) {
    event[data.payload.metric[i].name.toLowerCase()] = data.payload.metric[i].int_value // this code assumes all values are of type int
 }
 ```
-- once this data structure is ready, the inject script hands it over to the saveData() function defined in the datamanager script
+- once this data structure is ready, the inject script hands it over to the saveData() function defined in the **datamanager** script
 ```
 var dataManager = require("../entities/datamanager");
 return dataManager.saveData(event);
@@ -74,7 +74,7 @@ The **/entities/datamanager** script deals with the CRUD operation executed on t
 ```
 event.type = event.speed ? "moving" : "stop";  
 ```
-- The function then creates some metadata that is used to inform scriptr's data store about the types of values it has to store. This is not a mandatory step as script will turn every value to a string by default. Adding metadata is howwever useful if we need to run some type-specific operations, such as asking script to calculate the average speed as we wil see it later on:
+- The function then creates some metadata that is used to inform scriptr about the types of values it has to store. This is not a mandatory step as scriptr will turn every value to a string by default. Adding metadata is howwever useful if we need to run some type-specific operations, such as asking scriptr to calculate the average speed, as we wil see it later on:
 ```
 event["meta.types"] = {
 
@@ -87,7 +87,7 @@ event["meta.types"] = {
 };
 
 ```
-- to perist the data, the saveData() function only needs to require scriptr's native **document module** and invoke it's **create()** function, passing it the event + metadata:
+- to persist the data, the saveData() function only needs to require scriptr's native **document module** and invoke it's **create()** function, passing it the event + metadata:
 ```
 var documentModule = require("document");
 var resp = document.create(event);
@@ -104,7 +104,7 @@ Our applications' dashboard has to display the historical and latest events valu
 This is the job of the **listHistoricalData(deviceId, pageNumber, resultsPerPage, eventType)** function. It is a generic function that retrieves the events of a given type (i.e "moving" or "stop" as described earlier), for a given device id. If the latter is not provided, it reads the events of the provided type, for all devices.
 
 - first thing the function does it to prepare the query that will be executed agains scriptr's data store. The query has to specify:
-  - the fields to return. In our case, we instruct scriptr to return all fields  - '*'
+  - the fields to return. In our case, we instruct scriptr to return all fields  --> '*'
   - the number (index) of the page to return (scriptr automatically paginates the results if their total number is > 50)
   - the max number of results to return per page (this number has to be <= 50, which is the default value)
   - the count field to instruct scriptr to return the total count of results
@@ -185,12 +185,12 @@ We use the native **publish(channelName, message)** method to publish to scriptr
 
 In the **/entities/datamanger** script, three functions are in charge of publishing updates to the dashboard:
 
-- publishUpdatesMovingType(): publishes events of type "moving" in addition to the average speed. As you can see, it sets the id to "latest_moving". which means that any widget listening to this id will consume the message
+- publishUpdatesMovingType(): publishes events of type "moving" in addition to the average speed. As you can see, it sets the message id to "latest_moving". which means that only widgets listening to this id will consume the message
 ```
 event.averageSpeed = getAverageSpeed(event.deviceId);
 var resp = publish("responseChannel", {id: "latest_moving", result: event});
 ```
-- publishUpdatesStopType(): publishes events of type "stop". The function actually performs to publish() calls, one of them containing data specifically formatted to be used by the map widget of the dashboard
+- publishUpdatesStopType(): publishes events of type "stop". The function actually performs to publish() calls, one of them containing data specifically formatted to be used by the map widget of the dashboard. This time, we have used a different message id (latest_stop), to only target the widgets that are interested in this id
 ```
 var resp = publish("responseChannel", {id: "latest_stop", result: event});
 resp = publish("responseChannel", {id: "latest_map", result: util.formatData(event)});
@@ -207,3 +207,36 @@ In the [workspace](https://www.scriptr.io/workspace), expand the code tree in th
 - 2 speedometers, respectively showing the current bus speed and current average speed of the bus
 - A line chart, displaying the variation of passenges who got on/off the bus and those who are on the bus
 
+### Displaying data in real time
+
+*Note: your dashboard should be pre-configured so the below is for your information*
+
+To allow a dashboard to display data in real time, we  need to subscribe it to a scriptr channel, in our case, to **responseChannel** since this is where the **/entities/datamanger** is publishing updates, as described above. 
+
+To subscribe the dashboard to the channel, click on the gear icon in the top right corner of the dashboard. In the "Subscribe channel"  field, type "responseChannel". You do not have to fill the "Publish channel" field. Click "Save" to validate you changes.
+
+![Subscribe the dashboard to a channel](./images/subscribe_dashboard.png)
+
+Next step is to specify in every widget the identifier of the message it is interested in. The procedure is identical for all the widgets so we will use "Out" odometer as an example (it display the number of passengers who got off the bus):
+
+- Open the widget's settings by cliking on the gear icon in its top right corner
+- Select **wss** (secure websockets) for the **Transport** field
+- In the **Message tag** field, type **latest_stop**, which is the message id that contains interest data for the odometer
+- In the **Format data** field, type **return data.absoluteout** to instruct the widget to display the value of the absoluteout field of the data it received
+- click **Save** to validate. Don' t forget to also save the changes in the dashboard (by clicking Save in the toolbar)
+
+In the table below, we map every widget to the message id it should listen to, as well as to the format data instruction used to filter the data
+
+| widget | message tag | format data intruction |
+|--------|-------------|------------------------|
+| In odometer | latest_stop | return data.absolutein; |
+| pop odometer | latest_stop | return data.absolutein; |
+| Current speed odometer | latest_moving | return data.speed; |
+| Average speed odometer | latest_moving | return data.averageSpeed; |
+| Historical data line chart | latest_historical | return data; |
+| Map | latest_map | return data;|
+
+
+### Displaying data the first time the dashboard is loaded
+
+While we mentioned that our dashboard will display data in real time (as device messages flow in), we still 
