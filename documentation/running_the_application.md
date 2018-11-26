@@ -82,3 +82,4 @@ Once data starts being generated, it will automatically flow into your scriptr a
 27.992886,-82.755032,pcn
 27.994098,-82.751083,pcn
 ```
+**[<< back](./installing_the_application.md)**, **[next >>](./understanding_the_code.md)** 
