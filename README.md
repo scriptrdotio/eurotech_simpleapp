@@ -5,5 +5,5 @@ This is a simple demo app that demonstrates how easy it is to leverage data publ
 - [Overview](./documentation/overview.md)
 - [Installing the application](./documentation/installing_the_application.md)
 - [Running the application](./documentation/running_the_application.md)
-- [Understanding the application's code]()
+- [Understanding the application's code](./documentation/understanding_the_code.md)
 
