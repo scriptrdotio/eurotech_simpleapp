@@ -1,0 +1,26 @@
+/**
+ * Default working configuration for the application
+ * You can replace the content with your own values
+ */
+
+var subdomain = ""; // replace with your own sub-domain name. Make sure it is unique
+
+var eurotechChannel = "eurotech";
+
+var dashboardChannel = "responseChannel";
+
+var deviceId = "scriptr-bus-001"; // replace with your own device id
+
+// Configure the below to mach your own configuration on Everyware
+var endpointConfig = {
+   
+   "name" : "eurotech",
+   "protocol" : "eurotech",
+   "url" : "mqtt://broker-sandbox.everyware-cloud.com", // replace with your own Everyware endpoint
+   "port" : "1883",
+   "clientId" : deviceId, // replace with your own device id
+   "username" : "", // fill with your own Everyware username
+   "password" : "", // replace with the password associated with the username
+   "topic" : "Scriptr-io/+/#", // replace with your own topic prefix
+   "passphrase" : "", // leave empty
+};
