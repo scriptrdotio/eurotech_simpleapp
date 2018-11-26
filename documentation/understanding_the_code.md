@@ -264,5 +264,5 @@ In our application, the API scripts are contained in the /api folder. The below 
 
 *Table 2 - Associating widgets to message API operations and operation parameters*
 
-[back](./understanding_the_code.md#understanding-the-applications-code)
+[back](./running_the_application.md)
 
