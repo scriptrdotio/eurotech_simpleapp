@@ -1,0 +1,131 @@
+/**
+ * simple installer application to avoid manually configuring the application
+ * just run the script. 
+ * Logs are displayed in the console and in the log file of your workspace (toolbar > logs)
+ */
+
+var channel = require("channel");
+var subdomain = require("subdomain");
+var log = require("log");
+log.setLevel("info");
+
+// create the eurotech channel
+var isOk = createChannel("eurotech", {subscribeACL: "authenticated", publishACL: "authenticated"});
+
+// create the responseChannel channel
+isOK = createChannel("responseChannel", {subscribeACL: "anonymous", publishACL: "authenticated"});
+
+// subscribe the inject script to the eurotech channel
+isOk = subscribeScriptToChannel("eurotech_simpleapp/api/inject", "eurotech");
+
+// create a sub-domain
+createSubdomain("eurotech");
+
+return isOK ? "Done." : "Completed with errors/warnings. Please check logs.";
+
+function createChannel(name, options) {
+
+    // create the eurotech channel = "";
+    var msg = "";
+    trace("Creating the " +  name + " channel...");
+    var resp = channel.create(name, options);
+    if (resp.metadata.status == "failure") {
+
+        if (resp.metadata.errorCode == "DUPLICATE_CHANNEL") {
+
+            msg = name + " channel already exists. Skipping this step.";
+            trace(msg, "Warning");            
+        } else {
+
+            msg = "Failed to create the " +  name  + " channel. Please try manually.\n" + JSON.stringify(resp);
+            trace(msg, "Error");           
+        }
+
+        return false;
+    }else {
+
+        msg = "Successfuly created the " + name  + " channel."
+        trace(msg);
+        return true;
+    }
+}
+
+function subscribeScriptToChannel(script, channel) {
+
+    trace("Subscribing " + script + " to channel " + channel + "...");
+    var resp = subscribe(channel, script);
+    if (resp.metadata.status == "failure") {
+
+        if (resp.metadata.errorCode == "CALLBACK_SUBSCRIBED") {
+            trace(script +  " already subscribed to " + channel + ". Skipping this step.", "Warning");
+        }else {
+            trace("Failed to subscribe " + script +  " to " + channel + ".\n" +  JSON.stringify(resp), "Error");
+        }
+
+        return false;
+    }else {
+        trace("Successfuly subscribed " + script +  " to " + channel);
+        return true;
+    }
+}
+
+function trace(msg, level) {
+
+    log.info(msg); 
+    console.log((level ? level + " - " : "") + msg);
+}
+
+function createSubdomain(prefix) {
+
+    trace("Creating sub-domain...");
+    var id = guid();
+    var name = prefix + "-" + id;
+    var resp = subdomain.create(name);
+    if (resp.metadata.status == "failure") {
+
+        // a sub-domain already exists. delete existing one and create the new one
+        if (resp.metadata.errorCode == "MAX_SUBDOMAINS_EXCEEDED") {
+
+            resp = subdomain.list();
+            if (resp.metadata.status == "failure") {
+                trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");                
+            }else {
+
+                var existing = resp.result.subdomains[0].name;
+                resp = subdomain.delete(existing);
+                if (resp.metadata.status == "failure") {
+                    trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
+                }else {
+
+                    var resp = subdomain.create(name);
+                    if (resp.metadata.status == "failure") {
+                        trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");                        
+                    }else {
+                        trace("Successfuly create subdomain " + name);
+                        return true;
+                    }
+                }
+            }
+        }else {
+            trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
+        }
+
+        return false;
+    }else {
+        trace("Successfuly create subdomain " + name);
+        return true;
+    }
+}
+
+function guid() {
+
+    var choice = "abcdefghijklmnopqrstuvwxyz0123456789";
+    var id = "";
+    for(var i = 0; i < 6; i++) {
+
+        var pick = choice[Math.round(Math.random() * (choice.length - 1))];
+        id += pick
+    }
+
+    return id;
+}
