@@ -6,20 +6,32 @@
 
 var channel = require("channel");
 var subdomain = require("subdomain");
+var device = require("device");
+var document = require("document");
+var config = require("./config");
 var log = require("log");
 log.setLevel("info");
 
 // create the eurotech channel
-var isOk = createChannel("eurotech", {subscribeACL: "authenticated", publishACL: "authenticated"});
+var isOk = createChannel(config.eurotechChannel, {subscribeACL: "authenticated", publishACL: "authenticated"});
 
 // create the responseChannel channel
-isOK = createChannel("responseChannel", {subscribeACL: "anonymous", publishACL: "authenticated"});
+isOK = createChannel(config.dashboardChannel, {subscribeACL: "anonymous", publishACL: "authenticated"});
 
 // subscribe the inject script to the eurotech channel
 isOk = subscribeScriptToChannel("eurotech_simpleapp/api/inject", "eurotech");
 
 // create a sub-domain
-createSubdomain("eurotech");
+isOk = createSubdomain("eurotech");
+
+// create a device and its token
+isOk = createScriptrDevice();
+
+// create an endpoint for eurotech
+isOK = createExternalEndpoint();
+
+// Create a bridge for that endpoint
+isOK =  createBridge();
 
 return isOK ? "Done." : "Completed with errors/warnings. Please check logs.";
 
@@ -69,52 +81,123 @@ function subscribeScriptToChannel(script, channel) {
     }
 }
 
-function trace(msg, level) {
-
-    log.info(msg); 
-    console.log((level ? level + " - " : "") + msg);
-}
-
 function createSubdomain(prefix) {
 
     trace("Creating sub-domain...");
     var id = guid();
-    var name = prefix + "-" + id;
+    var name = config.subdomain ? config.subdomain : prefix + "-" + id;
     var resp = subdomain.create(name);
     if (resp.metadata.status == "failure") {
 
-        // a sub-domain already exists. delete existing one and create the new one
         if (resp.metadata.errorCode == "MAX_SUBDOMAINS_EXCEEDED") {
-
-            resp = subdomain.list();
-            if (resp.metadata.status == "failure") {
-                trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");                
-            }else {
-
-                var existing = resp.result.subdomains[0].name;
-                resp = subdomain.delete(existing);
-                if (resp.metadata.status == "failure") {
-                    trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
-                }else {
-
-                    var resp = subdomain.create(name);
-                    if (resp.metadata.status == "failure") {
-                        trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");                        
-                    }else {
-                        trace("Successfuly create subdomain " + name);
-                        return true;
-                    }
-                }
-            }
+            trace("A sub-domain already exists. Skipping this step.");            
         }else {
             trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
         }
 
         return false;
     }else {
-        trace("Successfuly create subdomain " + name);
+        trace("Successfuly created subdomain " + name);
         return true;
     }
+}
+
+function createScriptrDevice() {
+
+    trace("Saving device " + config.deviceId + "...");
+    var resp = device.create({id: config.deviceId, name: config.deviceId, password: guid()});
+    if (resp.metadata.status == "failure") {
+
+        if (resp.metadata.errorCode == "DUPLICATE_DEVICE") {
+            trace("Device " + config.deviceId +  " already exists. Skipping this step.", "Warning"); 
+        }else {
+            trace("Could not create device " + config.deviceId + ".\n" + JSON.stringify(resp), "Error");             
+        }
+
+        return false;   
+    }else {
+
+        resp = device.generateToken(config.deviceId);
+        if (resp.metadata.status == "failure") {
+
+            trace("Could not generate token for device " + config.deviceId 
+                  + ".Please make sure to generate one manually.\n" + JSON.stringify(resp), "Warning");
+            return false;
+        }
+
+        resp = document.save({key: config.deviceId, token: resp.result.token});
+        if (resp.metadata.status == "failure") {
+
+            trace("Could not persist token for device " + config.deviceId 
+                  + ". Please make sure to persist one manually.\n" + JSON.stringify(resp), "Warning");
+            return false;
+        }
+
+        trace("Device saved successfuly");
+        return true;
+    }
+}
+
+function createExternalEndpoint() {
+
+    trace("Creating endpoint...");
+    var externalEndpointParams = {
+
+        "name" : config.endpointConfig.name,
+        "protocol" : config.endpointConfig.protocol,
+        "url" : config.endpointConfig.url,
+        "port" : config.endpointConfig.port,
+        "clientId" : config.endpointConfig.clientId,
+        "username" : config.endpointConfig.username,
+        "password" : config.endpointConfig.password,
+        "topic" : config.endpointConfig.topic,
+        "passphrase" : "",
+    };
+
+    var resp = apsdb.callApi("SaveExternalEndpointConfiguration", externalEndpointParams, null);
+    if (resp.metadata.status == "failure") {
+
+        if (resp.metadata.errorCode == "DUPLICATE_EXTERNAL_ENDPOINT") {
+            trace("Endpoint already exists. Skipping this step.", "Warning");     
+        }else {
+            trace("Could not create endpoint.\n" + JSON.stringify(resp));    
+        }
+
+        return false;
+    }
+
+    trace("Endpoint successfuly created");
+    return true;
+}
+
+function createBridge() {
+
+    var resp = document.get(config.deviceId);
+    if (resp.metadata.status == "failure") {
+
+        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp));
+        return false;
+    }
+
+    var token = resp.result.token;    
+    var addBridgeParams = {
+        "channel" : config.eurotechChannel,
+        "externalEndpointConfiguration" : config.endpointConfig.name,
+        "auth_token" : token
+    };
+
+    resp = apsdb.callApi("AddBridge",addBridgeParams,null);
+    if (resp.metadata.status == "failure") {
+
+        trace("Could not create bridge. \n" + JSON.stringify(resp));
+        return false;
+    }
+}
+
+function trace(msg, level) {
+
+    log.info(msg); 
+    console.log((level ? level + " - " : "") + msg);
 }
 
 function guid() {
