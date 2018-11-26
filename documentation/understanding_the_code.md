@@ -244,6 +244,8 @@ In the table below, we map every widget to the message id it should listen to, a
 | Historical data line chart | latest_historical | return data; |
 | Map | latest_map | return data;|
 
+*Table 1 - Associating widgets to message tags and data filters*
+
 ### Displaying data the first time the dashboard is loaded
 
 While our dashboard displays data in real time (as device messages flow in), it won't display anything the first time it is loaded if no message arrives simultaneously. Therefore, to avoid displaying an empty dashboard, we should configure the widget to read the latest data that was received and persisted. This is simply done by setting the value of the **Api** field in the widget's settings, to the name of a script that can return the required data. The first time the dashboard is loaded, each widget will automatically invoke the specified API operation and display the returned value.
@@ -259,6 +261,8 @@ In our application, the API scripts are contained in the /api folder. The below 
 | Average speed odometer | eurotech_simpleapp/api/getLatestData | {"eventType":"moving"} |
 | Historical data line chart | eurotech_simpleapp/api/listHistoricalData } | {"eventType":"stop"} |
 | Map | latest_map | eurotech_simpleapp/api/getLatestData | {"eventType":"moving", "formatData":"true"} |
+
+*Table 2 - Associating widgets to message API operations and operation parameters*
 
 [back](./understanding_the_code.md#understanding-the-applications-code)
 
