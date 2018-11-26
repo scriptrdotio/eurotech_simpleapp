@@ -20,8 +20,6 @@ Click "Save" to validate you changes.
 
 ## Import the source code from Github
 
-**Note**
-
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen:
 - Click on **Install Modules**
 - In the Modules dialog:
