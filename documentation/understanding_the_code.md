@@ -219,6 +219,8 @@ To subscribe the dashboard to the channel, click on the gear icon in the top rig
 
 ![Subscribe the dashboard to a channel](./images/subscribe_dashboard.png)
 
+*Image 1 - Subscribe the dashboard to the responseChannel*
+
 Next step is to specify in every widget the identifier of the message it is interested in. The procedure is identical for all the widgets so we will use "Out" odometer as an example (it display the number of passengers who got off the bus):
 
 - Open the widget's settings by cliking on the gear icon in its top right corner
@@ -228,6 +230,8 @@ Next step is to specify in every widget the identifier of the message it is inte
 - click **Save** to validate. Don' t forget to also save the changes in the dashboard (by clicking Save in the toolbar)
 
 ![Configure widgets](./images/configure_widget.png)
+
+*Image 2 - Configure a widget to read data*
 
 In the table below, we map every widget to the message id it should listen to, as well as to the format data instruction used to filter the data
 
