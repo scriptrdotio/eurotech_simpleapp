@@ -2,7 +2,7 @@
 
 ## Description
 
-The application is based on the Eurotech [PCN-Transport simulator](https://cs.eurotech.com/gps-pcn-simulator/). The simulator mimics the behavior of a device installed on a bus, which publishes data to a eurotech Everyware mqtt topic. Two types of events are published by the simulator:
+This a simple dashboard application that monitors metrics sent by devices installed on buses. As you can read it in [running the application](./running_the_application.md), you can simulate the device by resorting to Eurotech's simulator mimics. The latter publishes data to a eurotech Everyware mqtt topic. Two types of events are published by the simulator:
 - location and speed data, published while the bus is moving
 - bus load data (passengers getting off, getting on, current number of passengers), published while the bus is stopped.
 
