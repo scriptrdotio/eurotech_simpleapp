@@ -199,6 +199,8 @@ resp = publish("responseChannel", {id: "latest_map", result: util.formatData(eve
 ```
 var resp = publish("responseChannel", {id: "latest_historical", result: data});
 ```
+[back](./understanding_the_code.md#understanding-the-applications-code)
+
 ## Displaying data in the dashboard
 
 In the [workspace](https://www.scriptr.io/workspace), expand the code tree in the left pane and double click on **/view/dashboard** to open the dashboard designed for the application. The dashboard is composed of the following widgets:
@@ -225,6 +227,8 @@ Next step is to specify in every widget the identifier of the message it is inte
 - In the **Format data** field, type **return data.absoluteout** to instruct the widget to display the value of the absoluteout field of the data it received
 - click **Save** to validate. Don' t forget to also save the changes in the dashboard (by clicking Save in the toolbar)
 
+![Configure widgets](./images/configure_widget.png)
+
 In the table below, we map every widget to the message id it should listen to, as well as to the format data instruction used to filter the data
 
 | widget | message tag | format data intruction |
@@ -236,7 +240,21 @@ In the table below, we map every widget to the message id it should listen to, a
 | Historical data line chart | latest_historical | return data; |
 | Map | latest_map | return data;|
 
-
 ### Displaying data the first time the dashboard is loaded
 
-While we mentioned that our dashboard will display data in real time (as device messages flow in), we still 
+While our dashboard displays data in real time (as device messages flow in), it won't display anything the first time it is loaded if no message arrives simultaneously. Therefore, to avoid displaying an empty dashboard, we should configure the widget to read the latest data that was received and persisted. This is simply done by setting the value of the **Api** field in the widget's settings, to the name of a script that can return the required data. The first time the dashboard is loaded, each widget will automatically invoke the specified API operation and display the returned value.
+
+In our application, the API scripts are contained in the /api folder. The below table associates each widget to the name of the API script it needs. Observe that to optimize our script (avoid writting the same logic multiple times) our API scripts are parameterizable. For example, if we pass the **eventType=moving** parameter to the **/api/getLatestData** API script, it only returns the latest event of type "moving". Same goes for **eventType=stop**. In the widgets settings, this parameter is passed using the **Api params** field. Note that in the case of the map widget, we also need to pass the **format=true** parameter, to ask our scripts to format the data in a way it can be displayed in a map.
+
+| widget | API script  | Parameter|
+|--------|-------------|----------|
+| Out odometer | eurotech_simpleapp/api/getLatestData | {"eventType":"stop"} |
+| In odometer | eurotech_simpleapp/api/getLatestData | {"eventType":"stop"} |
+| pop odometer | latest_stop | eurotech_simpleapp/api/getLatestData | {"eventType":"stop"} |
+| Current speed odometer | eurotech_simpleapp/api/getLatestData | {"eventType":"moving"} |
+| Average speed odometer | eurotech_simpleapp/api/getLatestData | {"eventType":"moving"} |
+| Historical data line chart | eurotech_simpleapp/api/listHistoricalData } | {"eventType":"stop"} |
+| Map | latest_map | eurotech_simpleapp/api/getLatestData | {"eventType":"moving", "formatData":"true"} |
+
+[back](./understanding_the_code.md#understanding-the-applications-code)
+
