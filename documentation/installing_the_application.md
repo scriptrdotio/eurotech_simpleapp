@@ -38,6 +38,8 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 
 ## Configure the application
 
+**Note** The below steps are provided for your information. You can skip them by running the **/installer/install** script that ships with the application.
+
 ### Create a sub-domain for your scriptr account
 
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on your username then select **Account**
