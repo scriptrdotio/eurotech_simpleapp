@@ -9,6 +9,8 @@ This section describes in details the code of the application. Since the code it
 - [Publishing updates to the dashboard](./understanding_the_code.md#publishing-updates-to-the-dashboard)
 - [Displaying data in the dashboard](./understanding_the_code.md#displaying-data-in-the-dashboard)
 
+[<< back](./running_the_application.md)
+
 ## Structure of the application
 
 The application is composed of three layers:
@@ -264,5 +266,5 @@ In our application, the API scripts are contained in the /api folder. The below 
 
 *Table 2 - Associating widgets to message API operations and operation parameters*
 
-[back](./running_the_application.md)
+[back](./understanding_the_code.md#understanding-the-applications-code)
 
