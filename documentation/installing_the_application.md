@@ -1,6 +1,26 @@
 # Installing the application
 
+## Configure Github in your scriptr account
+
+To execute this step you need to own a Github account and you need to have generated a Github Personal Access Token the configure your Github settings in scriptr. If you do not wish to do so, you can use the below temporarily:
+
+- Github account username: scriptrdemoaccount
+- Personal Access Token: a8eb34a42d29e37d334c66735986b364e918eedd
+
+To configure the Github settings in scriptr, your [scriptr workspace](https://www.scriptr.io/workspace), click on your username in the top right corner of the screen, then select **Settings** then click on the **Github** tab. 
+
+Fill the fields as follows:
+- Repository Owner: scriprdotio
+- Access Token: your personal access token or the one provided above 
+- Repository Name: demo
+- Branch: master
+- Path: leave empty
+
+The click "Save".
+
 ## Import from Github
+
+**Note**
 
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen:
 - Click on **Install Modules**
