@@ -13,7 +13,7 @@ On the scriptr side, the application is subscribed to the Everyware mqtt topic. 
 *Image 1 - Architecture overview*
 
 
-The dahboard displays real time data and historical data:
+The dashboard displays real time data and historical data:
 - real time data: the location of the bus on a map as well as latest values of speed, passengers in, passengers out, current number of passengers and average speed.
 - historical data: evolution of in, out and number of passengers with time
 
