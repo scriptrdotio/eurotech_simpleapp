@@ -39,7 +39,7 @@ Once data starts being generated, it will automatically flow into your scriptr a
 - Click on **View** in the toolbar to open the dashboard in the browser
 
 ---
-**[<< back](../README.md)**, **[next >>]()** 
+**[<< back](./running_the_application.md)**, **[next >>](./understanding_the_code.md)** 
 
 # Data
 ```
