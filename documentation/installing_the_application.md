@@ -16,7 +16,7 @@ Fill the fields as follows:
 - Branch: master
 - Path: leave empty
 
-The click "Save".
+Click "Save" to validate you changes.
 
 ## Import from Github
 
