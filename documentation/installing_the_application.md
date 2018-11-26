@@ -18,7 +18,7 @@ Fill the fields as follows:
 
 Click "Save" to validate you changes.
 
-## Import from Github
+## Import the source code from Github
 
 **Note**
 
