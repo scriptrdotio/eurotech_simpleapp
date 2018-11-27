@@ -111,6 +111,10 @@ From the [scriptr workspace](https://www.scriptr.io/workspace):
 - Set the **Topic** to *your_everyware_topic*/+/#
 - Click on the checkbox button to validate your changes
 
+![Create an endpoint](./images/create-endpoint.png)
+
+*Image 5 - Create the eurotech endpoint*
+
 #### Create a bridge
 
 A bridge connects an endpoint to one of your scriptr channels. Thus to create a bridge, you need to choose a channel:
@@ -133,7 +137,7 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ![Create channels](./images/subscribe_to_channel.png)
 
-*Image 5 - Susbcribe to the eurotech channel*
+*Image 6 - Susbcribe to the eurotech channel*
 
 ---
 
