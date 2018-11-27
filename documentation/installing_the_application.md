@@ -1,4 +1,4 @@
-# Installing the application
+# Installing and configuring the application
 
 ## Configure Github in your scriptr account
 
