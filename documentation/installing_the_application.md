@@ -1,5 +1,14 @@
 # Installing and configuring the application
 
+```Diff
+- IMPORTANT NOTICE
+- If you were provided with a Eurotech promocode from scriptr, you do not have to go through the below steps.
+- Use the promocode when signing-up to scriptr, to automatically deploy the appliation's code in your account.
+- Once successfully registered, sign-in to scriptr and run the **/installer/install** script that ships with the application. 
+- Before running this script though, make sure to modify the **/installer/config** script 
+- to put your own settings. Kindly refer to the comments in the config script for further instructions.
+``` 
+
 ## Configure Github in your scriptr account
 
 To proceed with the installation steps, you need to own a Github account and a Github Personal Access Token. If you don' t have any of them, you can use the below temporarily:
@@ -35,13 +44,6 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 *Image 1 - Import the application from Github to scriptr*
 
 ## Configure the application
-
-```Diff
-- The below steps are provided for your information. 
-- You can skip them by running the **/installer/install** script that ships with the application. 
-- Before running this script though, make sure to onfigure the /installer/config script 
-- to reflect your own settings. Kindly refer to the comments in the latter for instructions.
-``` 
 
 ### Create a sub-domain for your scriptr account
 
