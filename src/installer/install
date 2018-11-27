@@ -113,7 +113,7 @@ function createSubdomain(prefix) {
 
         if (resp.metadata.errorCode == "MAX_SUBDOMAINS_EXCEEDED") {
 
-            trace("A sub-domain already exists. Skipping this step.");            
+            trace("A sub-domain already exists. Skipping this step.", "Warning");            
             return stepComplete(true);
         }else {
             trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
