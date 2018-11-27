@@ -2,7 +2,7 @@
 
 ## Configure Github in your scriptr account
 
-To proceed with the installation step, you need to own a Github account and a Github Personal Access Token. If you do not wish to do so, you can use the below temporarily:
+To proceed with the installation steps, you need to own a Github account and a Github Personal Access Token. If you do not wish to do so, you can use the below temporarily:
 
 - Github account username: scriptrdemoaccount
 - Personal Access Token: a8eb34a42d29e37d334c66735986b364e918eedd
