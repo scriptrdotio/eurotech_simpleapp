@@ -130,7 +130,7 @@ A bridge connects an endpoint to one of your scriptr channels. Thus to create a 
 - Paste your device authentication token (obtained in [create a device](./installing_the_application.md#create-a-device))
 - Click on **Add Bridge** to deploy a new bridge
 
-![Create a bridge](./images/creae-bridge.png)
+![Create a bridge](./images/create-bridge.png)
 
 *Image 6 - Create a bridge to connect the eurotech channel to the Everyware mqtt endpoint*
 
