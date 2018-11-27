@@ -26,7 +26,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
   - Expand **+Add Custom Module from GitHub** 
   - Use scriptrdotio as account owner
   - Use eurotech_simpleapp as Repository name
-  - Leave the path empty
+  - Set the path to "/src" to only checkout the source code (and not the documentation)
   - Use /eurotech_simpleapp as destination folder
   - Click Install when done
   
