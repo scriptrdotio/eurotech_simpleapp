@@ -40,7 +40,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 - The below steps are provided for your information. 
 - You can skip them by running the **/installer/install** script that ships with the application. 
 - Before running this script though, make sure to onfigure the /installer/config script 
-- to reflect your own settings.
+- to reflect your own settings. Kindly refer to the comments in the latter for instructions.
 ``` 
 
 ### Create a sub-domain for your scriptr account
