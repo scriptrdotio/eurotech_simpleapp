@@ -23,7 +23,7 @@ Click "Save" to validate you changes.
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen:
 - Click on **Install Modules**
 - In the Modules dialog:
-  - Expand +Add Custom Module from GitHub 
+  - Expand **+Add Custom Module from GitHub** 
   - Use scriptrdotio as account owner
   - Use eurotech_simpleapp as Repository name
   - Leave the path empty
