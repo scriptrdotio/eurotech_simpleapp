@@ -36,7 +36,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 
 ## Configure the application
 
-*The below steps are provided for your information. You can skip them by running the **/installer/install** script that ships with the application. Before running this script, configure the /installer/config script to reflect your own settings.*
+*The below steps are provided for your information. You can skip them by running the **/installer/install** script that ships with the application. Before running this script though, cmake sure to onfigure the /installer/config script to reflect your own settings.*
 
 ### Create a sub-domain for your scriptr account
 
@@ -67,20 +67,51 @@ Proceed similarly to create the second channel (responseChannel) but this time, 
 
 *Image 3 - Create your channels*
 
+### Create a device
+
+You need to create a device in scriptr that is the representation of the physical device in scriptr. Therefore, from the [scriptr workspace](https://www.scriptr.io/workspace):
+
+- Click on your username in the top right corner of the screen
+- Click on **Device directory**
+- Click **+Add Device**
+- Enter the same value for the id and name fields. **Make sure that they match the id of a device you've created using the [Eurotech simulator](https://cs.eurotech.com/gps-pcn-simulator/)** or an actual device id in your Everyware account
+- Enter some password, then click on the checkbox to save your changes
+- **Copy the authentication token that is associated to the device, as you will need it in the "create a bridge" step**
+
 ### Subscribe to the Everyware MQTT topic
 
-Data are published in two distinct topics hosted by the Everyware platform
+The devices used in this application publish data to two distinct topics hosted by the Everyware platform:
 
 - {account}/{client_id}/PCNPublisher/LocationPublisher/location. Published data are position_speed, position_longitude, position_latitude
 - {account}/{client_id}/PCNPublisher/Bus. Published data are position_longitude, position_latitude, AbsolutePop, AbsoluteOut, AbsoluteIn 
 
-You need to create an endpoint + bridge on scriptr to subscribe to the above. On that purpose, you will use the following configuration:
+To automatically convey these messages to your scriptr account, you need to create an endpoint + bridge on scriptr that subscribe to the above. 
 
-- URL: mqtt://broker-sandbox.everyware-cloud.com
-- Port: 1883
-- Username: *your Everyware username*
-- Password: *your Everyware password*
-- Topic: *your_everyware_topic*/+/#
+#### Create an endpoint 
+
+From the [scriptr workspace](https://www.scriptr.io/workspace):
+
+- Click on your username in the top right corner of the screen:
+- Click on Settings then select the **External Endpoints** tab
+- Click on **+Add External Endpoint**
+- From the **Type** drop-down field, scroll to select **Eurotech**
+- Set the value of the **URL** field to that of your Everyware account (e.g. mqtt://broker-sandbox.everyware-cloud.com)
+- Set the **Port** field to 1883
+- Set the **Username** to *your Everyware username*
+- Set the **Password** to *your Everyware password*
+- Set the **Topic** to *your_everyware_topic*/+/#
+- Click on the checkbox button to validate your changes
+
+#### Create a bridge
+
+A bridge connects an endpoint to one of your scriptr channels. Thus to create a bridge, you need to choose a channel:
+
+- Click on your username in the top right corner of the screen
+- Click on **Settings** then select the **Channels** tab
+- Click on the globe icon near the **eurotech** channel
+- From the drop down list, select the **eurotech** endpoint
+- Paste your device authentication token (obtained in []())
+- Click on **Add Bridge** to deploy a new bridge
 
 ### Subscribe the inject script to the eurotech channel
 
