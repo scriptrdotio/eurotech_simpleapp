@@ -126,6 +126,10 @@ A bridge connects an endpoint to one of your scriptr channels. Thus to create a 
 - Paste your device authentication token (obtained in [create a device](./installing_the_application.md#create-a-device))
 - Click on **Add Bridge** to deploy a new bridge
 
+~[Create a bridge](./images/creae-bridge.png)
+
+*Image 6 - Create a bridge to connect the eurotech channel to the Everyware mqtt endpoint*
+
 ### Subscribe the inject script to the eurotech channel
 
 The above configuration subscribes your scriptr account to your mqtt topic on Everyware. All messages that are published to the latter will automatically be received by your **eurotech** channel. In order to start working on the payload contained in these messages, you just need to subscribe a script to the **eurotech** channel:
@@ -137,7 +141,7 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ![Create channels](./images/subscribe_to_channel.png)
 
-*Image 6 - Susbcribe to the eurotech channel*
+*Image 7 - Susbcribe to the eurotech channel*
 
 ---
 
