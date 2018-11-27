@@ -27,7 +27,7 @@ The dashboard displays real time data and historical data:
 You need an Everyware account:
 
 - [Everyware account](https://console-sandbox.everyware-cloud.com/) (sandbox in this example) and you need to create an mqtt topic in the platform to which the simulator will publish data
-
+- A [Github account](https://github.com/)
 
 ---
 **[<< back](../README.md)**, **[next >>](./installing_the_application.md)**
