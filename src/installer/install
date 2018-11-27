@@ -48,7 +48,7 @@ if (warnings > 0) {
     if (completedSteps ==  TOTAL_STEPS) {
         return "Installation successful but reported " + warnings + " warnings. Please check logs";
     }else {
-        return " Inconsistent state with" + warnings + " warning. Number of completed tasks is " + completedSteps + " over " + TOTAL_STEPS + ". Please check logs";
+        return " Inconsistent state with" + warnings + " warnings. Number of completed tasks is " + completedSteps + " over " + TOTAL_STEPS + ". Please check logs";
     }    
 }
 
