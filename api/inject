@@ -9,16 +9,15 @@
 var dataManager = require("../entities/datamanager");
 
 try {
-
-    // parse the raw message into a JSON object
-    var message = JSON.parse(request.rawBody);
+    
+    var message = request.body; 
     
     // the topic property of the received message contains the id of the device that published the message
     var msgParts = message.topic.split("/");
     var data = {
 
         deviceId: msgParts[1],
-        payload: message.payload
+        payload: message
     }; 
 
     // create key/value strucuture (event) that contains the device id , the location and any additional data contained in the payload
@@ -46,4 +45,3 @@ try {
 }catch(exception) {
     log.error("Could not handle receive message.\n"  +  JSON.stringify(exception));
 }
-
