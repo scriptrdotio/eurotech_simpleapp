@@ -12,28 +12,47 @@ var config = require("./config");
 var log = require("log");
 log.setLevel("info");
 
-// create the eurotech channel
-var isOk = createChannel(config.eurotechChannel, {subscribeACL: "authenticated", publishACL: "authenticated"});
+const TOTAL_STEPS = 7;
 
-// create the responseChannel channel
-isOK = createChannel(config.dashboardChannel, {subscribeACL: "anonymous", publishACL: "authenticated"});
+var errors = 0;
+var warnings = 0;
+var completedSteps = 0;
 
-// subscribe the inject script to the eurotech channel
-isOk = subscribeScriptToChannel("eurotech_simpleapp/api/inject", "eurotech");
+// step 1: create the eurotech channel
+createChannel(config.eurotechChannel, {subscribeACL: "authenticated", publishACL: "authenticated"});
 
-// create a sub-domain
-isOk = createSubdomain("eurotech");
+// step 2: create the responseChannel channel
+createChannel(config.dashboardChannel, {subscribeACL: "anonymous", publishACL: "authenticated"});
 
-// create a device and its token
-isOk = createScriptrDevice();
+// step 3: subscribe the inject script to the eurotech channel
+subscribeScriptToChannel("eurotech_simpleapp/api/inject", "eurotech");
 
-// create an endpoint for eurotech
-isOK = createExternalEndpoint();
+// step 4: create a sub-domain
+createSubdomain("eurotech");
 
-// Create a bridge for that endpoint
-isOK =  createBridge();
+// step 5: create a device and its token
+createScriptrDevice();
 
-return isOK ? "Done." : "Completed with errors/warnings. Please check logs.";
+// step 6: create an endpoint for eurotech
+createExternalEndpoint();
+
+// tep 7: Create a bridge for that endpoint
+createBridge();
+
+if (errors > 0) {
+    return "Installation failed with " + errors + " errors. Please check logs";
+}
+
+if (warnings > 0) {
+    
+    if (completedSteps ==  TOTAL_STEPS) {
+        return "Installation successful but reported " + warnings + " warnings. Please check logs";
+    }else {
+        return " Inconsistent state with" + warnings + " warning. Number of completed tasks is " + completedSteps + " over " + TOTAL_STEPS + ". Please check logs";
+    }    
+}
+
+return "Installation successful. Number of completed tasks is " + completedSteps + " over " + TOTAL_STEPS;
 
 function createChannel(name, options) {
 
@@ -47,18 +66,18 @@ function createChannel(name, options) {
 
             msg = name + " channel already exists. Skipping this step.";
             trace(msg, "Warning");            
+            return stepComplete(true);
         } else {
 
             msg = "Failed to create the " +  name  + " channel. Please try manually.\n" + JSON.stringify(resp);
-            trace(msg, "Error");           
+            trace(msg, "Error");  
+            return stepFailed();
         }
-
-        return false;
     }else {
 
         msg = "Successfuly created the " + name  + " channel."
         trace(msg);
-        return true;
+        return stepComplete(false);
     }
 }
 
@@ -69,15 +88,18 @@ function subscribeScriptToChannel(script, channel) {
     if (resp.metadata.status == "failure") {
 
         if (resp.metadata.errorCode == "CALLBACK_SUBSCRIBED") {
-            trace(script +  " already subscribed to " + channel + ". Skipping this step.", "Warning");
-        }else {
-            trace("Failed to subscribe " + script +  " to " + channel + ".\n" +  JSON.stringify(resp), "Error");
-        }
 
-        return false;
-    }else {
-        trace("Successfuly subscribed " + script +  " to " + channel);
-        return true;
+            trace(script +  " already subscribed to " + channel + ". Skipping this step.", "Warning");
+            return stepComplete(true);
+        }else {
+
+            trace("Failed to subscribe " + script +  " to " + channel + ".\n" +  JSON.stringify(resp), "Error");
+            return stepFailed();
+        }
+    }else {        
+
+        trace("Successfuly subscribed " + script +  " to " + channel);  
+        return stepComplete(false);
     }
 }
 
@@ -90,15 +112,16 @@ function createSubdomain(prefix) {
     if (resp.metadata.status == "failure") {
 
         if (resp.metadata.errorCode == "MAX_SUBDOMAINS_EXCEEDED") {
+
             trace("A sub-domain already exists. Skipping this step.");            
+            return stepComplete(true);
         }else {
             trace("Failed to create subdomain " + name + ".\n" +  JSON.stringify(resp), "Error");
+            return stepFailed();
         }
-
-        return false;
     }else {
         trace("Successfuly created subdomain " + name);
-        return true;
+        return stepComplete(false);
     }
 }
 
@@ -109,12 +132,14 @@ function createScriptrDevice() {
     if (resp.metadata.status == "failure") {
 
         if (resp.metadata.errorCode == "DUPLICATE_DEVICE") {
-            trace("Device " + config.deviceId +  " already exists. Skipping this step.", "Warning"); 
-        }else {
-            trace("Could not create device " + config.deviceId + ".\n" + JSON.stringify(resp), "Error");             
-        }
 
-        return false;   
+            trace("Device " + config.deviceId +  " already exists. Skipping this step.", "Warning"); 
+            return stepComplete(true);
+        }else {
+
+            trace("Could not create device " + config.deviceId + ".\n" + JSON.stringify(resp), "Error");             
+            return stepFailed();
+        }
     }else {
 
         resp = device.generateToken(config.deviceId);
@@ -122,7 +147,7 @@ function createScriptrDevice() {
 
             trace("Could not generate token for device " + config.deviceId 
                   + ".Please make sure to generate one manually.\n" + JSON.stringify(resp), "Warning");
-            return false;
+            return stepComplete(true);
         }
 
         resp = document.save({key: config.deviceId, token: resp.result.token});
@@ -130,11 +155,11 @@ function createScriptrDevice() {
 
             trace("Could not persist token for device " + config.deviceId 
                   + ". Please make sure to persist one manually.\n" + JSON.stringify(resp), "Warning");
-            return false;
+            return stepFailed();
         }
 
         trace("Device saved successfuly");
-        return true;
+        return stepComplete(false);
     }
 }
 
@@ -158,25 +183,28 @@ function createExternalEndpoint() {
     if (resp.metadata.status == "failure") {
 
         if (resp.metadata.errorCode == "DUPLICATE_EXTERNAL_ENDPOINT") {
-            trace("Endpoint already exists. Skipping this step.", "Warning");     
-        }else {
-            trace("Could not create endpoint.\n" + JSON.stringify(resp));    
-        }
 
-        return false;
+            trace("Endpoint already exists. Skipping this step.", "Warning");     
+            return stepComplete(true);
+        }else {
+
+            trace("Could not create endpoint.\n" + JSON.stringify(resp));    
+            return stepFailed();
+        }    
     }
 
     trace("Endpoint successfuly created");
-    return true;
+    return stepComplete(false);
 }
 
 function createBridge() {
 
+    trace("Creating bridge...");
     var resp = document.get(config.deviceId);
     if (resp.metadata.status == "failure") {
 
-        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp));
-        return false;
+        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp), "Error");
+        return stepFailed();
     }
 
     var token = resp.result.token;    
@@ -186,12 +214,22 @@ function createBridge() {
         "auth_token" : token
     };
 
-    resp = apsdb.callApi("AddBridge",addBridgeParams,null);
+    resp = apsdb.callApi("AddBridge", addBridgeParams,null);
     if (resp.metadata.status == "failure") {
 
-        trace("Could not create bridge. \n" + JSON.stringify(resp));
-        return false;
+        if (resp.metadata.errorCode == "BRIDGE_ALREADY_EXISTS") {
+
+            trace("Bridge already exists. Skipping this step.", "Warning");
+            return stepComplete(true);
+        }else {
+
+            trace("Could not create bridge. \n" + JSON.stringify(resp));
+            return stepFailed();
+        }
     }
+
+    trace("Bridge created successfuly");
+    return stepComplete(false);
 }
 
 function trace(msg, level) {
@@ -211,4 +249,19 @@ function guid() {
     }
 
     return id;
+}
+
+function stepComplete(withWarning) {
+
+    if(withWarning) {
+        warnings++;
+    }
+
+    completedSteps++;
+    return completedSteps;
+}
+
+function stepFailed() {
+
+    return ++errors;
 }
