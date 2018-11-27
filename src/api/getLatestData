@@ -17,7 +17,7 @@ try {
     if (request.parameters.body) {
         
         parameters = JSON.parse(request.parameters.body);
-        if (typeof(parameters) == "string") { // this is to fix a bug in the map widget that stringies the params object twice
+        if (typeof(parameters) == "string") { // this is to fix a bug in the map widget that stringifies the params object twice
             parameters = JSON.parse(parameters); 
         }
     }else {
