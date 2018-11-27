@@ -78,7 +78,7 @@ You need to create a device in scriptr that is the representation of the physica
 - Enter some password, then click on the checkbox to save your changes
 - **Copy the authentication token that is associated to the device, as you will need it in the [create a bridge](./installing_the_application.md#create-a-bridge) step**
 
-[!Create a device](./images/create-device.png)
+![Create a device](./images/create-device.png)
 
 *Image 4 - Create a device*
 
