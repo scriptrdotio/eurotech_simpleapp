@@ -78,6 +78,10 @@ You need to create a device in scriptr that is the representation of the physica
 - Enter some password, then click on the checkbox to save your changes
 - **Copy the authentication token that is associated to the device, as you will need it in the [create a bridge](./installing_the_application.md#create-a-bridge) step**
 
+[!Create a device](./images/create-device.png)
+
+*Image 4 - Create a device*
+
 ### Subscribe to the Everyware MQTT topic
 
 The devices used in this application publish data to two distinct topics hosted by the Everyware platform:
@@ -124,7 +128,7 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ![Create channels](./images/subscribe_to_channel.png)
 
-*Image 4 - Susbcribe to the eurotech channel*
+*Image 5 - Susbcribe to the eurotech channel*
 
 ---
 
