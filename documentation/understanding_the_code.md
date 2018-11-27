@@ -25,9 +25,9 @@ The application is composed of three layers:
 
 The **/api/inject** script automatically receives the mqtt messages that are published by the devices and broadcast by Everyware:
 
-- the mqtt message is received in the rawBody property of the native **request** object and it is parsed into a JSON object
+- the mqtt message is received in the body property of the native **request** object as a JSON object
 ```
-var message = JSON.parse(request.rawBody);
+var message = request.body;
 ```
 - the script then extracts the device id from the name of the topic to which the message was published (this name is provided in the mqtt message)
 ```
@@ -35,7 +35,7 @@ var msgParts = message.topic.split("/");
 var data = {
    
    deviceId: msgParts[1],
-   payload: message.payload
+   payload: message
 }; 
 
 ```
