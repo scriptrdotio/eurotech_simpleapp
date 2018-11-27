@@ -75,7 +75,7 @@ function createChannel(name, options) {
         }
     }else {
 
-        msg = "Successfuly created the " + name  + " channel."
+        msg = "Successfully created the " + name  + " channel."
         trace(msg);
         return stepComplete(false);
     }
@@ -98,7 +98,7 @@ function subscribeScriptToChannel(script, channel) {
         }
     }else {        
 
-        trace("Successfuly subscribed " + script +  " to " + channel);  
+        trace("Successfully subscribed " + script +  " to " + channel);  
         return stepComplete(false);
     }
 }
@@ -120,7 +120,7 @@ function createSubdomain(prefix) {
             return stepFailed();
         }
     }else {
-        trace("Successfuly created subdomain " + name);
+        trace("Successfully created subdomain " + name);
         return stepComplete(false);
     }
 }
@@ -158,7 +158,7 @@ function createScriptrDevice() {
             return stepFailed();
         }
 
-        trace("Device saved successfuly");
+        trace("Device saved successfully");
         return stepComplete(false);
     }
 }
@@ -193,7 +193,7 @@ function createExternalEndpoint() {
         }    
     }
 
-    trace("Endpoint successfuly created");
+    trace("Endpoint successfully created");
     return stepComplete(false);
 }
 
@@ -228,7 +228,7 @@ function createBridge() {
         }
     }
 
-    trace("Bridge created successfuly");
+    trace("Bridge created successfully");
     return stepComplete(false);
 }
 
