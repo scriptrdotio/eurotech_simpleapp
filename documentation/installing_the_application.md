@@ -16,12 +16,12 @@
 To proceed with the installation steps, you need to own a Github account and a Github Personal Access Token. If you don' t have any of them, you can use the below temporarily:
 
 - Github account username: scriptrdemoaccount
-- Personal Access Token: a8eb34a42d29e37d334c66735986b364e918eedd
+- Personal Access Token: f326b4a96495659e1b5d3931d7e4f7c4f0609821
 
 To configure the Github settings in scriptr, open your [scriptr workspace](https://www.scriptr.io/workspace), click on your username in the top right corner of the screen, then select **Settings** then click on the **Github** tab. 
 
 Fill the fields as follows:
-- Repository Owner: scriprdotio
+- Repository Owner: scriptrdotio
 - Access Token: your personal access token or the one provided above 
 - Repository Name: demo
 - Branch: master
