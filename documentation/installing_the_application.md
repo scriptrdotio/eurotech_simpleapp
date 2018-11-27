@@ -76,7 +76,7 @@ You need to create a device in scriptr that is the representation of the physica
 - Click **+Add Device**
 - Enter the same value for the id and name fields. **Make sure that they match the id of a device you've created using the [Eurotech simulator](https://cs.eurotech.com/gps-pcn-simulator/)** or an actual device id in your Everyware account
 - Enter some password, then click on the checkbox to save your changes
-- **Copy the authentication token that is associated to the device, as you will need it in the "create a bridge" step**
+- **Copy the authentication token that is associated to the device, as you will need it in the [create a bridge](./installing_the_application.md#create-a-bridge) step**
 
 ### Subscribe to the Everyware MQTT topic
 
