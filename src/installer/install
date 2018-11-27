@@ -57,26 +57,22 @@ return "Installation successful. Number of completed tasks is " + completedSteps
 function createChannel(name, options) {
 
     // create the eurotech channel = "";
-    var msg = "";
     trace("Creating the " +  name + " channel...");
     var resp = channel.create(name, options);
     if (resp.metadata.status == "failure") {
 
         if (resp.metadata.errorCode == "DUPLICATE_CHANNEL") {
 
-            msg = name + " channel already exists. Skipping this step.";
-            trace(msg, "Warning");            
+            trace(name + " channel already exists. Skipping this step.", "Warning");            
             return stepComplete(true);
         } else {
 
-            msg = "Failed to create the " +  name  + " channel. Please try manually.\n" + JSON.stringify(resp);
-            trace(msg, "Error");  
+            trace("Failed to create the " +  name  + " channel. Please try manually.\n" + JSON.stringify(resp), "Error");  
             return stepFailed();
         }
     }else {
 
-        msg = "Successfully created the " + name  + " channel."
-        trace(msg);
+        trace("Successfully created the " + name  + " channel.");
         return stepComplete(false);
     }
 }
@@ -154,7 +150,7 @@ function createScriptrDevice() {
         if (resp.metadata.status == "failure") {
 
             trace("Could not persist token for device " + config.deviceId 
-                  + ". Please make sure to persist one manually.\n" + JSON.stringify(resp), "Warning");
+                  + ". Please make sure to persist one manually.\n" + JSON.stringify(resp), "Error");
             return stepFailed();
         }
 
@@ -188,7 +184,7 @@ function createExternalEndpoint() {
             return stepComplete(true);
         }else {
 
-            trace("Could not create endpoint.\n" + JSON.stringify(resp));    
+            trace("Could not create endpoint.\n" + JSON.stringify(resp), "Error");    
             return stepFailed();
         }    
     }
@@ -223,7 +219,7 @@ function createBridge() {
             return stepComplete(true);
         }else {
 
-            trace("Could not create bridge. \n" + JSON.stringify(resp));
+            trace("Could not create bridge. \n" + JSON.stringify(resp), "Error");
             return stepFailed();
         }
     }
