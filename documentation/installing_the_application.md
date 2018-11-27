@@ -2,6 +2,7 @@
 
 ```Diff
 - IMPORTANT NOTICE
+
 - If you were provided with a Eurotech promocode from scriptr, you do not have to go through the below steps.
 - Use the promocode when signing-up to scriptr, to automatically deploy the application's code in your account.
 
