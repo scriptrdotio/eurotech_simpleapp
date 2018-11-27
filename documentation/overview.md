@@ -24,10 +24,10 @@ The dashboard displays real time data and historical data:
 
 ## Pre-requisites
 
-You need an account in the following:
+You need an Everyware account:
 
 - [Everyware account](https://console-sandbox.everyware-cloud.com/) (sandbox in this example) and you need to create an mqtt topic in the platform to which the simulator will publish data
-- [scriptr account](https://www.scriptr.io/login)
+
 
 ---
 **[<< back](../README.md)**, **[next >>](./installing_the_application.md)**
