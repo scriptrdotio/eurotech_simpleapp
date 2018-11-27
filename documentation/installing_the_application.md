@@ -29,6 +29,10 @@ Fill the fields as follows:
 
 Click "Save" to validate you changes.
 
+![Github settings on scritpr](./images/github-settings.png)
+
+*Image 1 - Setup Github in your scriptr account*
+
 ## Import the source code from Github
 
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on the arrow next to +New Script in the bottom left corner of the screen:
@@ -43,7 +47,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
   
  ![Import Application](./images/import_application.png)
 
-*Image 1 - Import the application from Github to scriptr*
+*Image 2 - Import the application from Github to scriptr*
 
 ## Configure the application
 
@@ -56,7 +60,7 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on your u
 
  ![Create sub-domain](./images/create_subdomain.png)
 
-*Image 2 - Create a scriptr sub-domain for your account*
+*Image 3 - Create a scriptr sub-domain for your account*
 
 ### Create channels
 
@@ -74,7 +78,7 @@ Proceed similarly to create the second channel (responseChannel) but this time, 
 
 ![Create channels](./images/create_channels.png)
 
-*Image 3 - Create your channels*
+*Image 4 - Create your channels*
 
 ### Create a device
 
@@ -89,7 +93,7 @@ You need to create a device in scriptr that is the representation of the physica
 
 ![Create a device](./images/create-device.png)
 
-*Image 4 - Create a device*
+*Image 5 - Create a device*
 
 ### Subscribe to the Everyware MQTT topic
 
@@ -117,7 +121,7 @@ From the [scriptr workspace](https://www.scriptr.io/workspace):
 
 ![Create an endpoint](./images/create-endpoint.png)
 
-*Image 5 - Create the eurotech endpoint*
+*Image 6 - Create the eurotech endpoint*
 
 #### Create a bridge
 
@@ -132,7 +136,7 @@ A bridge connects an endpoint to one of your scriptr channels. Thus to create a 
 
 ![Create a bridge](./images/create-bridge.png)
 
-*Image 6 - Create a bridge to connect the eurotech channel to the Everyware mqtt endpoint*
+*Image 7 - Create a bridge to connect the eurotech channel to the Everyware mqtt endpoint*
 
 ### Subscribe the inject script to the eurotech channel
 
@@ -145,7 +149,7 @@ The above configuration subscribes your scriptr account to your mqtt topic on Ev
 
 ![Create channels](./images/subscribe_to_channel.png)
 
-*Image 7 - Susbcribe to the eurotech channel*
+*Image 8 - Susbcribe to the eurotech channel*
 
 ---
 
