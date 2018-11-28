@@ -2,7 +2,7 @@
 
 ## Description
 
-This application is a simplified scripr version of [Eurotech's PCN transportation demo](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/dashboard.md). It consists of a simple dashboard application that monitors metrics sent by **Eurotech** devices installed on buses. 
+This application is a simplified scripr version of [Eurotech's PCN transportation demo](https://github.com/eurotech/pcn-trans-demo/blob/master/docs/dashboard.md). It consists of a simple dashboard that monitors metrics sent by **Eurotech** devices installed on buses. 
 
 As you will read it in more details in [running the application](./running_the_application.md), you can actually simulate the device by resorting to **Eurotech's simulator**. The latter publishes data to a eurotech Everyware mqtt topic. Two types of events are published by the simulator:
 - location and speed data, published while the bus is moving
