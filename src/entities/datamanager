@@ -143,7 +143,7 @@ function getAverageSpeed(deviceId) {
         queryParams.query = queryParams.query + ' and eurotechDeviceId="' + deviceId + '"';
     }
 
-    var resp = document.query(queryParams);log.info(JSON.stringify(queryParams))
+    var resp = document.query(queryParams);
     if (resp.metadata.status == "failure") {
 
         log.error("documentmanager.getAverageSpeed() failed:\n" + JSON.stringify(resp.metadata));
