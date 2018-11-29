@@ -181,39 +181,29 @@ function createExternalEndpoint() {
 
 function generateToken(deviceId) {
 
-    var resp = device.regenerateToken(config.deviceId);
+    var resp = device.generateToken(deviceId);    
     if (resp.metadata.status == "failure") {
 
-        trace("Could not generate token for device " + config.deviceId 
+        trace("Could not generate token for device " + deviceId 
               + ". Please make sure to generate one manually and launch installer again.\n" + JSON.stringify(resp), "Error");
         return stepFailed();
     }
 
-    trace("Token generated successfully.");
-    resp = document.save({key: config.deviceId, token: resp.result.token});
-    if (resp.metadata.status == "failure") {
-
-        trace("Could not persist token for device " + config.deviceId 
-              + ". Please make sure to persist one manually using " + config.deviceId + " as document key.\n" + JSON.stringify(resp), "Error");
-        return stepFailed();
-    }
-
-    trace("Token saved successfully");
+    trace("Token generated successfully.");    
     return stepComplete(false);
 }
 
 function createBridge() {
 
     trace("Creating bridge...");
-    var resp = document.get(config.deviceId);
+    var resp = device.get(config.deviceId);
     if (resp.metadata.status == "failure") {
 
-        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp), "Warning");
-        trace("Will try to regenerate token. If your bridge already exists, you must manually update the token for the bridge!");
-        return generateToken(config.deviceId);
+        trace("Could not load data for device" + config.deviceId + "\n" + JSON.stringify(resp), "Error");
+        return stepFailed();
     }
 
-    var token = resp.result.token;    
+    var token = resp.result.auth_token;
     var addBridgeParams = {
         "channel" : config.eurotechChannel,
         "externalEndpointConfiguration" : config.endpointConfig.name,
