@@ -12,7 +12,7 @@ var document = require("document");
 var log = require("log");
 
 const MIN_DOCUMENTS = 75;
-const MAX_DELETE_CHUNK = 50;
+const MAX_DELETE_CHUNK = 50; // any other custom value should be less than 50
 
 // start logger
 log.setLevel("info");
@@ -25,6 +25,7 @@ var queryParams = {
     query: 'deviceId is not null',
     fields: 'key',
     sort:'creationDate<date:ASC>',
+    resultsPerPage: MAX_DELETE_CHUNK,
     count: true
 };
 
