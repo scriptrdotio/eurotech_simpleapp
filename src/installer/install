@@ -241,7 +241,7 @@ function createBridge() {
 function scheduleStoreKeeper() {
 
     // do not schedule is script already scheduled
-    trace("Scheduling eurotech_simpleapp/installer/storekeeper script to execute regularly");
+    trace("Scheduling eurotech_simpleapp/installer/storekeeper script to execute regularly...");
     var resp = document.query({query:'apsST_scriptName = "eurotech_simpleapp/installer/storekeeper"', fields:"key"});
     if (resp.metadata.status == "failure") {
         trace("Problem occured while checking if storekeeper was scheduled. This might lead to scheduling the script more than once.\n" 
