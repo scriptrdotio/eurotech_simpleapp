@@ -13,7 +13,7 @@ var log = require("log");
 log.setLevel("info");
 
 const TOTAL_STEPS = 8;
-const STORE_KEEPING_INTERVAL = 10; // in minutes
+const STORE_KEEPING_INTERVAL = 5; // in minutes
 
 var errors = 0;
 var warnings = 0;
