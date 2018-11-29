@@ -23,7 +23,7 @@ try {
     // create key/value strucuture (event) that contains the device id , the location and any additional data contained in the payload
     // such as speed and metrics when available
     var event = {
-        id: data.deviceId
+        eurotechDeviceId: data.deviceId
     };
     
     if (data.payload.position.speed) {    
