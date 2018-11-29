@@ -24,6 +24,7 @@ var queryParams = {
 	
     query: 'deviceId is not null',
     fields: 'key',
+    sort:'creationDate<date:ASC>',
     count: true
 };
 
