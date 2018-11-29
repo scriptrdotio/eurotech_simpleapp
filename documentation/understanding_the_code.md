@@ -44,7 +44,7 @@ var data = {
   - the other type is related to the number of passengers gettings of/on the bus and its positon (absolutein, absoluteout, absoluteopop, latitude, longitude)
 ```
 var event = {
-   id: data.deviceId
+   eurotechDeviceId: data.deviceId
 };
    
 if (data.payload.position.speed) {    
@@ -120,7 +120,7 @@ var queryParams = {
  };
 
  if (deviceId){
-     queryParams.query = 'deviceId="' + deviceId + '"';
+     queryParams.query = 'eurotechDeviceId="' + deviceId + '"';
  }
 
  if (pageNumber) {
@@ -166,7 +166,7 @@ Scriptr's simple yet powerful querying mechanism allows you to execute aggregate
  };
 
  if (deviceId) {
-     queryParams.query = queryParams.query + ' and deviceId="' + deviceId + '"';
+     queryParams.query = queryParams.query + ' and eurotechDeviceId="' + deviceId + '"';
  }
  ```
 - next, we execute the query by passing the above parameters to the query() function of the native **document** module.
