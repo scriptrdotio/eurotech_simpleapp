@@ -20,7 +20,7 @@ log.setLevel("info");
  * - events sent when the bus stops to drop off, onboard passengers: they contain deviceid, absolutein, absoluteout and absolutepop data 
  * Therefore, when saving the data, we add a "type" field of which value is set to "moving" or to "stop" depending on the received event
  * @param {Object} [event]
- * @param {String} [event.deviceId]: the id of the device that published the data
+ * @param {String} [event.eurotechDeviceId]: the id of the device that published the data
  * @param {Number} [event.lat]: the latitude of the device when data was published
  * @param {Number} [event.long]: the longitude of the device when data was published
  * @param {Number} [event.speed]: the speed of the vehicle when data was published (optional)
@@ -58,8 +58,8 @@ function saveData(event) {
         publishUpdatesMovingType(event);       
     }else {
 
-        publishUpdatesStopType(event);
-        var historicalData = listHistoricalData(event.deviceId, 1, 50, event.type);
+        publishUpdatesStopType(event); 
+        var historicalData = listHistoricalData(event.eurotechDeviceId, 1, 50, event.type);
         publishUpdatedHistorical(historicalData);
     }
 
@@ -102,7 +102,7 @@ function listHistoricalData(deviceId, pageNumber, resultsPerPage, eventType) {
     };
 
     if (deviceId){
-        queryParams.query = 'deviceId="' + deviceId + '"';
+        queryParams.query = 'eurotechDeviceId="' + deviceId + '"';
     }
 
     if (pageNumber) {
