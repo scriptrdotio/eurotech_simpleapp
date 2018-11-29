@@ -209,7 +209,7 @@ function createBridge() {
     if (resp.metadata.status == "failure") {
 
         trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp), "Warning");
-        trace("Will try to regenerate token");
+        trace("Will try to regenerate token. If your bridge already exists, you must manually update the token for the bridge!");
         return generateToken(config.deviceId);
     }
 
