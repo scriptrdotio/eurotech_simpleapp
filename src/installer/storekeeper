@@ -36,7 +36,7 @@ if (resp.metadata.status == "failure") {
 
 // Do not delete if document count is <= min documents to keep some data
 var maxToDelete = 0;
-if (resp.result.count >= MIN_DOCUMENTS) {
+if (resp.result.count > MIN_DOCUMENTS) {
     
     log.info("storekeeper found " +   resp.result.count + " documents");
     var docList = resp.result.documents;
