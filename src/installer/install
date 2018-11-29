@@ -12,7 +12,8 @@ var config = require("./config");
 var log = require("log");
 log.setLevel("info");
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
+const STORE_KEEPING_INTERVAL = 10; // in minutes
 
 var errors = 0;
 var warnings = 0;
@@ -36,15 +37,18 @@ createScriptrDevice();
 // step 6: create an endpoint for eurotech
 createExternalEndpoint();
 
-// tep 7: Create a bridge for that endpoint
+// step 7: create a bridge for that endpoint
 createBridge();
+
+// step 8: schedule the storekeeper to execute regularly
+scheduleStoreKeeper();
 
 if (errors > 0) {
     return "Installation failed with " + errors + " errors. Please check logs";
 }
 
 if (warnings > 0) {
-    
+
     if (completedSteps ==  TOTAL_STEPS) {
         return "Installation successful but reported " + warnings + " warnings. Please check logs";
     }else {
@@ -137,25 +141,7 @@ function createScriptrDevice() {
             return stepFailed();
         }
     }else {
-
-        resp = device.generateToken(config.deviceId);
-        if (resp.metadata.status == "failure") {
-
-            trace("Could not generate token for device " + config.deviceId 
-                  + ".Please make sure to generate one manually.\n" + JSON.stringify(resp), "Warning");
-            return stepComplete(true);
-        }
-
-        resp = document.save({key: config.deviceId, token: resp.result.token});
-        if (resp.metadata.status == "failure") {
-
-            trace("Could not persist token for device " + config.deviceId 
-                  + ". Please make sure to persist one manually.\n" + JSON.stringify(resp), "Error");
-            return stepFailed();
-        }
-
-        trace("Device saved successfully");
-        return stepComplete(false);
+        return generateToken(config.deviceId);
     }
 }
 
@@ -193,14 +179,38 @@ function createExternalEndpoint() {
     return stepComplete(false);
 }
 
+function generateToken(deviceId) {
+
+    var resp = device.regenerateToken(config.deviceId);
+    if (resp.metadata.status == "failure") {
+
+        trace("Could not generate token for device " + config.deviceId 
+              + ". Please make sure to generate one manually and launch installer again.\n" + JSON.stringify(resp), "Error");
+        return stepFailed();
+    }
+
+    trace("Token generated successfully.");
+    resp = document.save({key: config.deviceId, token: resp.result.token});
+    if (resp.metadata.status == "failure") {
+
+        trace("Could not persist token for device " + config.deviceId 
+              + ". Please make sure to persist one manually using " + config.deviceId + " as document key.\n" + JSON.stringify(resp), "Error");
+        return stepFailed();
+    }
+
+    trace("Token saved successfully");
+    return stepComplete(false);
+}
+
 function createBridge() {
 
     trace("Creating bridge...");
     var resp = document.get(config.deviceId);
     if (resp.metadata.status == "failure") {
 
-        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp), "Error");
-        return stepFailed();
+        trace("Could not load token document for device " + config.deviceId + "\n" + JSON.stringify(resp), "Warning");
+        trace("Will try to regenerate token");
+        return generateToken(config.deviceId);
     }
 
     var token = resp.result.token;    
@@ -226,6 +236,35 @@ function createBridge() {
 
     trace("Bridge created successfully");
     return stepComplete(false);
+}
+
+function scheduleStoreKeeper() {
+
+    // do not schedule is script already scheduled
+    trace("Scheduling eurotech_simpleapp/installer/storekeeper script to execute regularly");
+    var resp = document.query({query:'apsST_scriptName = "eurotech_simpleapp/installer/storekeeper"', fields:"key"});
+    if (resp.metadata.status == "failure") {
+        trace("Problem occured while checking if storekeeper was scheduled. This might lead to scheduling the script more than once.\n" 
+              + JSON.stringify(resp), "WARNING");
+    }
+
+    if (resp.result.documents.length == 0) {
+
+        resp = schedule("eurotech_simpleapp/installer/storekeeper", "0/" +  STORE_KEEPING_INTERVAL + " * * * ?");
+        if (resp.metadata.status == "failure") { 
+
+            trace("Could not schedule the execution of the installer/storekeeper script. Please schedule manually.\n" + JSON.stringify(resp), "Warning");
+            return stepComplete(true);
+        }else {
+
+            trace("eurotech_simpleapp/installer/storekeeper script successfully scheduled. Handle is: " + resp.result.handle);
+            return stepComplete(false);
+        }
+    }else {
+
+        trace("storekeeper script already scheduled. Skipping this step.", "Warning");
+        return stepComplete(true);
+    }
 }
 
 function trace(msg, level) {
@@ -258,6 +297,5 @@ function stepComplete(withWarning) {
 }
 
 function stepFailed() {
-
     return ++errors;
 }
