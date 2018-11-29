@@ -40,7 +40,8 @@ if (resp.result.count >= MIN_DOCUMENTS) {
     
     log.info("storekeeper found " +   resp.result.count + " documents");
     var docList = resp.result.documents;
-    maxToDelete = resp.result.count - MIN_DOCUMENTS;
+    var diff = resp.result.count - MIN_DOCUMENTS;
+    maxToDelete = diff < MAX_DELETE_CHUNK ? diff : MAX_DELETE_CHUNK;
     log.info("storekeeper will delete " +   maxToDelete + " documents");
     for (var i = 0; i < maxToDelete; i++) {
         
