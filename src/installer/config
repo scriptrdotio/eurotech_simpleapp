@@ -9,7 +9,8 @@ var eurotechChannel = "eurotech";
 
 var dashboardChannel = "responseChannel";
 
-var deviceId = "scriptr-bus-001"; // replace with your own device id
+var deviceId = ""; // replace with your own device id
+var eurotechAccount = ""; // replace with your own account id
 
 // Configure the below to mach your own configuration on Everyware
 var endpointConfig = {
@@ -21,6 +22,6 @@ var endpointConfig = {
    "clientId" : deviceId, // replace with your own device id
    "username" : "", // fill with your own Everyware username
    "password" : "", // replace with the password associated with the username
-   "topic" : "Scriptr-io/+/#", // replace with your own topic prefix
+   "topic" : eurotechAccount + "/" + deviceId + "/+/#", // replace with your own topic prefix
    "passphrase" : "", // leave empty
 };
