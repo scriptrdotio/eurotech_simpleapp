@@ -116,7 +116,7 @@ From the [scriptr workspace](https://www.scriptr.io/workspace):
 - Set the **Port** field to 1883
 - Set the **Username** to *your Everyware username*
 - Set the **Password** to *your Everyware password*
-- Set the **Topic** to *your_everyware_topic*/+/#
+- Set the **Topic** to *your_everyware_topic*/your_device_id/+/#, e.g. : Scripr-io/scriptr-bus-001/+/#
 - Click on the checkbox button to validate your changes
 
 ![Create an endpoint](./images/create-endpoint.png)
