@@ -22,6 +22,6 @@ var endpointConfig = {
    "clientId" : deviceId, // replace with your own device id
    "username" : "", // fill with your own Everyware username
    "password" : "", // replace with the password associated with the username
-   "topic" : eurotechAccount + "/" + deviceId + "/+/#", // replace with your own topic prefix
+   "topic" : eurotechAccount + "/" + deviceId + "/+/#", 
    "passphrase" : "", // leave empty
 };
