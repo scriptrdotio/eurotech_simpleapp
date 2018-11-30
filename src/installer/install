@@ -19,7 +19,7 @@ var errors = 0;
 var warnings = 0;
 var completedSteps = 0;
 
-// step 0: check that config file was customized
+// check that config file was customized
 try {
     verifyConfigFileWasCustomized();
 }catch(abortexception) {
