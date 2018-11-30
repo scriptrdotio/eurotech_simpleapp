@@ -19,6 +19,13 @@ var errors = 0;
 var warnings = 0;
 var completedSteps = 0;
 
+// step 0: check that config file was customized
+try {
+    verifyConfigFileWasCustomized();
+}catch(abortexception) {
+    return abortexception;
+}
+
 // step 1: create the eurotech channel
 createChannel(config.eurotechChannel, {subscribeACL: "authenticated", publishACL: "authenticated"});
 
@@ -57,6 +64,42 @@ if (warnings > 0) {
 }
 
 return "Installation successful. Number of completed tasks is " + completedSteps + " over " + TOTAL_STEPS;
+
+function verifyConfigFileWasCustomized() {
+
+    var missing = [];
+
+    if (!config.deviceId) {
+        missing.push("deviceId");
+    }
+
+    if (!config.eurotechAccount) {
+        missing.push("eurotechAccount");  
+    } 
+
+    if (!config.endpointConfig.username) {
+        missing.push("endpointConfig.username");
+    }
+
+    if (!config.endpointConfig.password) {
+        missing.push("endpointConfig.password");
+    }
+
+    if (!config.endpointConfig.topic || config.endpointConfig.topic.indexOf("undefined") > -1) {
+        missing.push("endpointConfig.topic");
+    }
+    
+    if (missing.length > 0) {
+        
+        var msg = "installation was aborted because the following were not specifed in eurotech_simpleapp/installer/config: \n" +
+            missing.toString() + ".\nPlease make sure to customize the config file with your own setting before launching the install script!";
+        trace(msg);
+        throw {
+            errorCode: "installation_aborted",
+            errorDetail: msg
+        };
+    }
+}
 
 function createChannel(name, options) {
 
