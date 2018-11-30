@@ -92,7 +92,7 @@ function verifyConfigFileWasCustomized() {
     if (missing.length > 0) {
         
         var msg = "installation was aborted because the following were not specifed in eurotech_simpleapp/installer/config: \n" +
-            missing.toString() + ".\nPlease make sure to customize the config file with your own setting before launching the install script!";
+            missing.toString() + ".\nPlease make sure to customize the config file with your own settings before launching the install script!";
         trace(msg);
         throw {
             errorCode: "installation_aborted",
