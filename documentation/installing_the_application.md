@@ -6,9 +6,11 @@
 - If you were provided with a Eurotech promocode from scriptr, you do not have to go through the below steps.
 - Use the promocode when signing-up to scriptr, to automatically deploy the application's code in your account.
 
-- Once successfully registered, sign-in to scriptr and run the **/installer/install** script that ships with 
-- the application. Before running this script though, make sure to modify the **/installer/config** script 
-- to put your own settings. Kindly refer to the comments in the config script for further instructions.
+- Once successfully registered, sign-in to scriptr and make sure to modify the **/installer/config** script 
+- to put your own settings. Kindly refer to the comments in the config script for further instructions. 
+
+- Once you're done customizing the /installer/config file, run the **/installer/install** script that ships with 
+- the application. 
 ``` 
 
 ## Configure Github in your scriptr account
