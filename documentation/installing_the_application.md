@@ -54,8 +54,8 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 ## Configure the application
 
 There are two options to configure your application:
-1- Option 1: use the config and installer scripts 
-2- Option 2: configure your account manually
+1. Option 1: use the config and installer scripts 
+2. Option 2: configure your account manually
 
 ## Option 1 - use the config and installer scripts
 
