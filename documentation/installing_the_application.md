@@ -116,6 +116,7 @@ From the [scriptr workspace](https://www.scriptr.io/workspace):
 - From the **Type** drop-down field, scroll to select **Eurotech**
 - Set the value of the **URL** field to that of your Everyware account (e.g. mqtt://broker-sandbox.everyware-cloud.com)
 - Set the **Port** field to 1883
+- Set the Client id to the id of your device in the Everyware plaform (Important if you notice that you are not receiving data the reason might be that your client id does not actually match the id of one of your devices in Everyware)
 - Set the **Username** to *your Everyware username*
 - Set the **Password** to *your Everyware password*
 - Set the **Topic** to *your_everyware_topic*/your_device_id/+/#, e.g. : Scripr-io/scriptr-bus-001/+/#
