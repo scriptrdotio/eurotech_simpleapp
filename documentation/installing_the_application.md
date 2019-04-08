@@ -53,6 +53,23 @@ From your [scriptr workspace](https://www.scriptr.io/workspace), click on the ar
 
 ## Configure the application
 
+There are two options to configure your application:
+1- Option 1: use the config and installer scripts 
+2- Option 2: configure your account manually
+
+## Option 1 - use the config and installer scripts
+
+Open the /installer/config file:
+
+- Modify the "subdomain" variable and set its value to a unique name (this step is optional, a subdomain name will be generated for you if you skipt it)
+- Set the value of the "deviceId" variable to the identifier of one of your devices, as used in the Everyware Cloud platform
+- Set the value of the "endpointConfig.userame" to your username on the Everyware cloud platform 
+- Set the value of the "endpointConfig.password" to your password on the Everyware cloud platform
+
+Open and run the /intaller/install script and check the console for any message.
+
+## Option 2 - configure your account manually
+
 ### Create a sub-domain for your scriptr account
 
 From your [scriptr workspace](https://www.scriptr.io/workspace), click on your username then select **Account**
